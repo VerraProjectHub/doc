@@ -897,12 +897,17 @@
         <section class="detail-section">
           <h3>${escapeHtml(title)}</h3>
           <div class="detail-section-fields">
-            ${fields.map(([label, key]) => `
-              <div class="detail-section-field">
-                <h4>${escapeHtml(label)}</h4>
-                <p>${escapeHtml(provider[key] || "Not applicable.")}</p>
-              </div>
-            `).join("")}
+            ${fields.map(([label, key]) => {
+              const emptyValue = provider.id === "treeconomy" && (key === "limits" || key === "limitations")
+                ? ""
+                : "Not applicable.";
+              return `
+                <div class="detail-section-field">
+                  <h4>${escapeHtml(label)}</h4>
+                  <p>${escapeHtml(provider[key] || emptyValue)}</p>
+                </div>
+              `;
+            }).join("")}
           </div>
         </section>
       `;
