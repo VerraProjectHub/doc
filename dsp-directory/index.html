@@ -871,7 +871,7 @@
     }
 
     function providerPageUrl(id) {
-      return new URL(`dsp/${encodeURIComponent(id)}/`, window.location.href).toString();
+      return new URL(`${encodeURIComponent(id)}/`, window.location.href).toString();
     }
 
     function navigateToProvider(id) {
