@@ -49,7 +49,6 @@ class ReleaseSection:
 @dataclass
 class Release:
     title: str
-    status: str = ""
     notes: list[Paragraph] = field(default_factory=list)
     sections: list[ReleaseSection] = field(default_factory=list)
     anchor: str = ""
@@ -152,7 +151,6 @@ def parse_releases(paragraphs: list[Paragraph]):
     title = "Project Hub Release Notes"
     year = ""
     introduction = ""
-    status = ""
     releases: list[Release] = []
     closing: dict[str, list[Paragraph]] = {}
     current: Release | None = None
@@ -167,11 +165,9 @@ def parse_releases(paragraphs: list[Paragraph]):
             year = text
             continue
         if text.casefold() == "up coming" and not releases:
-            status = text
             continue
         if VERSION_RE.match(text):
-            current = Release(text, status=status if not releases else "")
-            status = ""
+            current = Release(text)
             releases.append(current)
             closing_key = None
             continue
@@ -199,7 +195,6 @@ def parse_releases(paragraphs: list[Paragraph]):
     if not any(release.title for release in releases):
         raise ValueError("The Word document contains no usable release notes.")
 
-    releases[0].status = releases[0].status or ""
     return title, year, introduction, releases, closing
 
 
@@ -276,7 +271,6 @@ STYLE = """\
       .release-card, .closing-section { overflow: hidden; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 10px 30px rgba(14, 43, 100, .07); }
       .release-heading { padding: clamp(20px, 4vw, 34px); background: linear-gradient(135deg, var(--ink) 0%, #19386e 100%); color: #fff; }
       .release-heading h2 { margin: 0; color: #fff; font-size: clamp(1.25rem, 2.6vw, 1.75rem); font-weight: 600; line-height: 1.35; }
-      .release-status { display: inline-block; margin-bottom: .65rem; padding: .25rem .55rem; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; color: #e6f4d7; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
       .release-note, .release-section, .closing-section > p, .closing-section > ul { margin: 0; padding: 18px clamp(20px, 4vw, 34px); color: var(--muted); font-size: .92rem; line-height: 1.75; }
       .release-note + .release-section, .release-section + .release-section, .release-note + .release-note, .release-section + .release-note { border-top: 1px solid #e8edf3; }
       .release-section h3 { margin: 0 0 .7rem; color: #15803d; font-size: 1.05rem; font-weight: 600; }
@@ -328,16 +322,11 @@ def render_sidebar(releases: list[Release]) -> str:
     return "\n".join(rows)
 
 
-def render_release(release: Release, index: int) -> str:
+def render_release(release: Release) -> str:
     heading_id = f"release-title-{slug(release.title)}"
-    status = (
-        f'<span class="release-status">{html.escape(release.status)}</span>'
-        if index == 0 and release.status
-        else ""
-    )
     content = [
         f'<section class="release-card" id="{release.anchor}" aria-labelledby="{heading_id}">',
-        f'<header class="release-heading">{status}<h2 id="{heading_id}">{html.escape(release.title)}</h2></header>',
+        f'<header class="release-heading"><h2 id="{heading_id}">{html.escape(release.title)}</h2></header>',
     ]
     for paragraph in release.notes:
         text = render_text(paragraph)
@@ -443,7 +432,7 @@ def render_page(paragraphs: list[Paragraph]) -> str:
         f"          <p>{html.escape(clean_text(introduction))}</p>",
         "        </header>",
     ]
-    body.extend(f"        {render_release(release, index)}" for index, release in enumerate(releases))
+    body.extend(f"        {render_release(release)}" for release in releases)
     if help_notes:
         body.append(f'        {render_closing("How You Can Help", help_notes, "help")}')
     if feedback_notes:
