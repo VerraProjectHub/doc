@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="See the latest improvements to Verra Project Hub.">
+    <meta name="theme-color" content="#0e2b64">
+    <title>Project Hub Release Notes | Verra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #0e2b64;
+        --ink-deep: #0a2050;
+        --green: #82c34f;
+        --teal: #047299;
+        --paper: #f3f6fa;
+        --muted: #52637b;
+        --line: #dce4ee;
+        font-family: "Be Vietnam Pro", Arial, sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        background: var(--paper);
+        color: #253348;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .site-header {
+        position: relative;
+        overflow: hidden;
+        background:
+          radial-gradient(ellipse at 86% 7%, rgba(130, 195, 79, 0.2), transparent 25rem),
+          linear-gradient(125deg, var(--ink-deep), var(--ink) 64%, #145678);
+        color: #fff;
+      }
+
+      .site-header::after {
+        position: absolute;
+        top: -11rem;
+        right: max(-8rem, calc((100vw - 1200px) / 2 - 7rem));
+        width: 31rem;
+        height: 31rem;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        box-shadow:
+          0 0 0 2.5rem rgba(255, 255, 255, 0.035),
+          0 0 0 5rem rgba(255, 255, 255, 0.025);
+        content: "";
+        pointer-events: none;
+      }
+
+      .header-inner,
+      main,
+      .footer-inner {
+        width: min(100% - 40px, 1040px);
+        margin-inline: auto;
+      }
+
+      .header-inner {
+        position: relative;
+        z-index: 1;
+        padding: 1.5rem 0 4rem;
+      }
+
+      .masthead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 4rem;
+      }
+
+      .brand img {
+        display: block;
+        width: 109px;
+        height: 40px;
+        padding: 4px 8px;
+        border-radius: 7px;
+        background: #fff;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        margin: 0 0 1rem;
+        color: #d8edc8;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 4px rgba(130, 195, 79, 0.15);
+        content: "";
+      }
+
+      h1 {
+        max-width: 720px;
+        margin: 0;
+        font-size: clamp(2.35rem, 6vw, 4.25rem);
+        font-weight: 600;
+        letter-spacing: -0.055em;
+        line-height: 1.08;
+      }
+
+      main {
+        position: relative;
+        margin-top: -2rem;
+        padding-bottom: 4rem;
+      }
+
+      .release-card {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 16px 42px rgba(14, 43, 100, 0.09);
+      }
+
+      .release-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding: clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .release-kicker {
+        margin: 0 0 0.45rem;
+        color: var(--teal);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(1.65rem, 3.5vw, 2.15rem);
+        font-weight: 600;
+        letter-spacing: -0.04em;
+      }
+
+      .release-date {
+        flex: 0 0 auto;
+        margin: 0.45rem 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .release-intro {
+        max-width: 780px;
+        margin: 0;
+        padding: 1.5rem clamp(1.5rem, 4vw, 2.5rem) 0;
+        color: #465875;
+        font-size: 0.98rem;
+        line-height: 1.8;
+      }
+
+      .highlights {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.8rem;
+        padding: 1.5rem clamp(1.5rem, 4vw, 2.5rem) 1.75rem;
+      }
+
+      .highlight {
+        min-height: 86px;
+        padding: 1rem 1.05rem;
+        border: 1px solid #e4ebf3;
+        border-radius: 12px;
+        background: #f8fafd;
+      }
+
+      .highlight strong {
+        display: block;
+        margin-bottom: 0.25rem;
+        color: var(--ink);
+        font-size: 0.86rem;
+      }
+
+      .highlight span {
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.5;
+      }
+
+      .release-section {
+        padding: 1.7rem clamp(1.5rem, 4vw, 2.5rem);
+        border-top: 1px solid var(--line);
+      }
+
+      .release-section h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin: 0 0 0.85rem;
+        color: var(--ink);
+        font-size: 1.08rem;
+        font-weight: 600;
+      }
+
+      .release-section h3::before {
+        width: 4px;
+        height: 1.15rem;
+        border-radius: 99px;
+        background: var(--green);
+        content: "";
+      }
+
+      .release-section ul {
+        display: grid;
+        gap: 0.7rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .release-section li {
+        position: relative;
+        padding-left: 1.15rem;
+        color: #465875;
+        font-size: 0.9rem;
+        line-height: 1.7;
+      }
+
+      .release-section li::before {
+        position: absolute;
+        top: 0.7em;
+        left: 0;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #73ad45;
+        content: "";
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-block: 1.25rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .footer-inner p {
+        margin: 0;
+      }
+
+      .footer-inner a {
+        color: var(--ink);
+        font-weight: 600;
+        text-underline-offset: 3px;
+      }
+
+      @media (max-width: 640px) {
+        .header-inner,
+        main,
+        .footer-inner {
+          width: min(100% - 28px, 1040px);
+        }
+
+        .header-inner {
+          padding-top: 1rem;
+          padding-bottom: 3.25rem;
+        }
+
+        .masthead {
+          padding-bottom: 3.5rem;
+        }
+
+        .release-heading {
+          display: block;
+        }
+
+        .release-date {
+          margin-top: 0.6rem;
+        }
+
+        .highlights {
+          grid-template-columns: 1fr;
+        }
+
+        .highlight {
+          min-height: auto;
+        }
+
+        .footer-inner {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="masthead">
+          <a class="brand" href="../index.html" aria-label="Verra Project Hub releases home">
+            <img src="../logo.svg" alt="Verra">
+          </a>
+        </div>
+        <p class="eyebrow">Verra Project Hub · Release notes</p>
+        <h1>More clarity at every step.</h1>
+      </div>
+    </header>
+
+    <main>
+      <article class="release-card" aria-labelledby="release-title">
+        <header class="release-heading">
+          <div>
+            <p class="release-kicker">Latest release</p>
+            <h2 id="release-title">Release 6.9</h2>
+          </div>
+          <p class="release-date"><time datetime="2026-11-05">November 5, 2026</time></p>
+        </header>
+
+        <p class="release-intro">This update makes project submissions and reviews easier to navigate, adds more flexibility to digital forms, and gives administrators clearer tools for managing requests and project information.</p>
+
+        <div class="highlights" aria-label="Release highlights">
+          <div class="highlight">
+            <strong>Simpler submissions</strong>
+            <span>More guided data entry and clearer monitoring reports.</span>
+          </div>
+          <div class="highlight">
+            <strong>More flexible forms</strong>
+            <span>Improved request management, notifications, and exports.</span>
+          </div>
+          <div class="highlight">
+            <strong>Smoother reviews</strong>
+            <span>Consistent updates, clearer prompts, and automatic saving.</span>
+          </div>
+        </div>
+
+        <section class="release-section" aria-labelledby="submission-title">
+          <h3 id="submission-title">Project Submission Tool</h3>
+          <ul>
+            <li>Calculation fields now appear or hide based on your selections, helping you focus on the information needed at each step.</li>
+            <li>Monitoring reports now include the monitoring period when custom methodology templates are used.</li>
+          </ul>
+        </section>
+
+        <section class="release-section" aria-labelledby="forms-title">
+          <h3 id="forms-title">Digital Forms</h3>
+          <ul>
+            <li>Administrators can filter the NOVS list by project proponent.</li>
+            <li>When a Registry user denies a request, they must select a reason. The reason can then be included in the decision letter.</li>
+            <li>Exemption requests that were pre-approved or returned can now be updated.</li>
+            <li>NOVS export files now use an updated date format.</li>
+            <li>The submit button is now available on communications agreements with multiple project proponents.</li>
+            <li>Additional VVB contacts listed on exemption request forms are now copied on request email notifications.</li>
+            <li>Administrators can download a PDF report of all comments on an exemption request.</li>
+          </ul>
+        </section>
+
+        <section class="release-section" aria-labelledby="review-title">
+          <h3 id="review-title">Review Tool</h3>
+          <ul>
+            <li>A project remains marked as “Assigned” after it is reassigned to a new category.</li>
+            <li>Required-field messages remain visible until all required fields are complete.</li>
+            <li>A confirmation message appears when you change a finding’s issue type.</li>
+            <li>Issue types added in one document are now available in the other documents in the same review.</li>
+            <li>Changes to documents, findings, and comments are now saved automatically.</li>
+            <li>Deadline warning emails now show the updated dates after an exemption request is approved.</li>
+            <li>Verra’s response now displays correctly in reviews.</li>
+            <li>Review rounds now update correctly.</li>
+          </ul>
+        </section>
+
+        <section class="release-section" aria-labelledby="general-title">
+          <h3 id="general-title">General Improvements</h3>
+          <ul>
+            <li>Interface updates make Project Hub easier to use.</li>
+            <li>Billing information from the registry billing system can now sync to Project Hub.</li>
+            <li>Registry information is now available on Verra’s public website.</li>
+            <li>Data is now extracted automatically during registry synchronization.</li>
+            <li>Data exports now include a filter.</li>
+          </ul>
+        </section>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>Verra Project Hub release notes</p>
+        <a href="../index.html">Return to the DSP Directory</a>
+      </div>
+    </footer>
+  </body>
+</html>
