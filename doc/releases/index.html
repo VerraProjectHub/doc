@@ -50,6 +50,51 @@
         box-shadow: 0 16px 42px rgba(14, 43, 100, 0.09);
       }
 
+      .release-index {
+        padding: 1.25rem clamp(1.5rem, 4vw, 2.5rem);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .release-index h2 {
+        margin: 0 0 0.6rem;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .release-index ol {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.25rem 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .release-index a {
+        display: block;
+        padding: 0.4rem 0.55rem;
+        border-radius: 6px;
+        color: var(--ink);
+        font-size: 0.86rem;
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      .release-index a:hover,
+      .release-index a:focus-visible {
+        outline: none;
+        background: #eff3f8;
+        color: #1d4ed8;
+      }
+
+      #latest,
+      .release-section {
+        scroll-margin-top: 1rem;
+      }
+
       .release-heading {
         display: flex;
         align-items: flex-start;
@@ -152,6 +197,10 @@
           display: block;
         }
 
+        .release-index ol {
+          grid-template-columns: 1fr;
+        }
+
         .release-date {
           margin-top: 0.6rem;
         }
@@ -162,7 +211,18 @@
   <body>
     <main>
       <article class="release-card" aria-labelledby="release-title">
-        <header class="release-heading">
+        <nav class="release-index" aria-label="Release notes index">
+          <h2>On this page</h2>
+          <ol>
+            <li><a href="#latest">Latest release: 6.9</a></li>
+            <li><a href="#project-submission-tool">Project Submission Tool</a></li>
+            <li><a href="#digital-forms">Digital Forms</a></li>
+            <li><a href="#review-tool">Review Tool</a></li>
+            <li><a href="#general-improvements">General Improvements</a></li>
+          </ol>
+        </nav>
+
+        <header class="release-heading" id="latest">
           <div>
             <p class="release-kicker">Latest release</p>
             <h2 id="release-title">Release 6.9</h2>
@@ -172,16 +232,16 @@
 
         <p class="release-intro">This update makes project submissions and reviews easier to navigate, adds more flexibility to digital forms, and gives administrators clearer tools for managing requests and project information.</p>
 
-        <section class="release-section" aria-labelledby="submission-title">
-          <h3 id="submission-title">Project Submission Tool</h3>
+        <section class="release-section" aria-labelledby="project-submission-tool">
+          <h3 id="project-submission-tool">Project Submission Tool</h3>
           <ul>
             <li>Calculation fields now appear or hide based on your selections, helping you focus on the information needed at each step.</li>
             <li>Monitoring reports now include the monitoring period when custom methodology templates are used.</li>
           </ul>
         </section>
 
-        <section class="release-section" aria-labelledby="forms-title">
-          <h3 id="forms-title">Digital Forms</h3>
+        <section class="release-section" aria-labelledby="digital-forms">
+          <h3 id="digital-forms">Digital Forms</h3>
           <ul>
             <li>Administrators can filter the NOVS list by project proponent.</li>
             <li>When a Registry user denies a request, they must select a reason. The reason can then be included in the decision letter.</li>
@@ -193,8 +253,8 @@
           </ul>
         </section>
 
-        <section class="release-section" aria-labelledby="review-title">
-          <h3 id="review-title">Review Tool</h3>
+        <section class="release-section" aria-labelledby="review-tool">
+          <h3 id="review-tool">Review Tool</h3>
           <ul>
             <li>A project remains marked as “Assigned” after it is reassigned to a new category.</li>
             <li>Required-field messages remain visible until all required fields are complete.</li>
@@ -207,8 +267,8 @@
           </ul>
         </section>
 
-        <section class="release-section" aria-labelledby="general-title">
-          <h3 id="general-title">General Improvements</h3>
+        <section class="release-section" aria-labelledby="general-improvements">
+          <h3 id="general-improvements">General Improvements</h3>
           <ul>
             <li>Interface updates make Project Hub easier to use.</li>
             <li>Billing information from the registry billing system can now sync to Project Hub.</li>
