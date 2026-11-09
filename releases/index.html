@@ -3,282 +3,1115 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="See the latest improvements to Verra Project Hub.">
+    <meta name="description" content="2026 Project Hub release notes and product updates.">
     <meta name="theme-color" content="#0e2b64">
     <title>Project Hub Release Notes | Verra</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-      :root {
-        color-scheme: light;
-        --ink: #0e2b64;
-        --paper: #e2e9f1;
-        --muted: #526073;
-        --line: #bfcbd9;
-        font-family: "Be Vietnam Pro", Arial, sans-serif;
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
+      :root { color-scheme: light; --ink: #0e2b64; --paper: #e2e9f1; --muted: #526073; --line: #bfcbd9; font-family: "Be Vietnam Pro", Arial, sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; scroll-padding-top: 1rem; }
+      body { min-width: 320px; min-height: 100vh; margin: 0; background: var(--paper); color: #253348; }
+      a { color: #1d4ed8; }
+      .page-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); align-items: stretch; min-height: 100vh; }
+      .release-index { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow-y: auto; padding: 20px 10px 32px; border-right: 1px solid var(--line); background: #fff; }
+      .release-index h2 { margin: 0 12px 12px; color: #6b7a8d; font-size: .76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .toc-sections, .toc-subitems { margin: 0; padding: 0; list-style: none; }
+      .toc-section { border-bottom: 1px solid #eef1f5; }
+      .toc-main-row { display: flex; align-items: center; gap: 6px; padding: 3px; border-radius: 6px; }
+      .toc-main-row:hover, .toc-main-row.active { background: #eff3f8; }
+      .toc .top { flex: 1; min-width: 0; padding: 7px 8px; border-radius: 6px; color: #526073; font-size: .81rem; font-weight: 600; line-height: 1.4; text-decoration: none; }
+      .toc .top:hover, .toc-main-row.active .top { color: #1d4ed8; }
+      .toc-toggle { display: inline-flex; flex: 0 0 30px; width: 30px; height: 30px; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: #94a3b8; cursor: pointer; }
+      .toc-toggle:hover { background: #eff3f8; }
+      .toc-toggle:focus-visible, .toc a:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, .25); }
+      .toc-chevron { width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); transition: transform 180ms ease; }
+      .toc-toggle[aria-expanded="true"] .toc-chevron { transform: rotate(225deg) translate(-2px, -2px); }
+      .toc-subitems { max-height: 0; overflow: hidden; visibility: hidden; }
+      .toc-subitems.expanded { max-height: 2000px; visibility: visible; }
+      .toc-subitems a { display: block; margin: 0 4px 3px 20px; padding: 6px 10px; border-left: 2px solid #dde4ee; border-radius: 0 6px 6px 0; color: #526073; font-size: .76rem; line-height: 1.4; text-decoration: none; overflow-wrap: anywhere; }
+      .toc-subitems a:hover, .toc-subitems a.active { border-left-color: #2563eb; background: #eff6ff; color: #1d4ed8; }
+      .toc a[aria-current="location"] { background: #eff6ff; color: #1d4ed8; }
+      .page-main { width: 100%; min-width: 0; margin: 0; padding: 24px 24px 64px; }
+      .page-heading { margin-bottom: 18px; padding: clamp(24px, 4vw, 42px); border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 10px 30px rgba(14, 43, 100, .07); }
+      .page-year { margin: 0 0 .4rem; color: #15803d; font-size: .8rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+      .page-heading h1 { margin: 0 0 .7rem; color: var(--ink); font-size: clamp(1.8rem, 3.8vw, 2.5rem); font-weight: 700; letter-spacing: -.04em; }
+      .page-heading p:last-child { max-width: 760px; margin: 0; color: var(--muted); line-height: 1.7; }
+      .release-card, .closing-section { overflow: hidden; margin-bottom: 18px; border: 1px solid var(--line); border-radius: 18px; background: #fff; box-shadow: 0 10px 30px rgba(14, 43, 100, .07); }
+      .release-heading { padding: clamp(20px, 4vw, 34px); background: linear-gradient(135deg, var(--ink) 0%, #19386e 100%); color: #fff; }
+      .release-heading h2 { margin: 0; color: #fff; font-size: clamp(1.25rem, 2.6vw, 1.75rem); font-weight: 600; line-height: 1.35; }
+      .release-status { display: inline-block; margin-bottom: .65rem; padding: .25rem .55rem; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; color: #e6f4d7; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+      .release-note, .release-section, .closing-section > p, .closing-section > ul { margin: 0; padding: 18px clamp(20px, 4vw, 34px); color: var(--muted); font-size: .92rem; line-height: 1.75; }
+      .release-note + .release-section, .release-section + .release-section, .release-note + .release-note, .release-section + .release-note { border-top: 1px solid #e8edf3; }
+      .release-section h3 { margin: 0 0 .7rem; color: #15803d; font-size: 1.05rem; font-weight: 600; }
+      .release-points { display: grid; gap: .55rem; margin: 0; padding: 0; list-style: none; }
+      .release-points li { position: relative; padding-left: 1.15rem; color: var(--muted); font-size: .9rem; line-height: 1.7; overflow-wrap: anywhere; }
+      .release-points li::before { position: absolute; top: .7em; left: 0; width: 5px; height: 5px; border-radius: 50%; background: #15803d; content: ""; }
+      .release-points a { overflow-wrap: anywhere; }
+      .closing-section h2 { margin: 0; padding: 20px clamp(20px, 4vw, 34px); background: linear-gradient(135deg, var(--ink) 0%, #19386e 100%); color: #fff; font-size: 1.35rem; }
+      .closing-section > p, .closing-section > ul { padding-top: 12px; padding-bottom: 12px; }
+      .closing-section > p + ul, .closing-section > ul + p { padding-top: 0; }
+      #latest, .release-section, .closing-section { scroll-margin-top: 1rem; }
+      @media (max-width: 900px) {
+        .page-layout { grid-template-columns: minmax(0, 1fr); }
+        .release-index { position: relative; height: auto; max-height: 44dvh; border-right: 0; border-bottom: 1px solid var(--line); }
+        .page-main { padding: 18px 14px 48px; }
       }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        min-width: 320px;
-        min-height: 100vh;
-        margin: 0;
-        background: var(--paper);
-        color: #253348;
-      }
-
-      a {
-        color: inherit;
-      }
-
-      main {
-        width: min(100% - 40px, 1040px);
-        margin: 24px auto;
-      }
-
-      .release-card {
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 18px;
-        background: #fff;
-        box-shadow: 0 16px 42px rgba(14, 43, 100, 0.09);
-      }
-
-      .release-index {
-        padding: 1.25rem clamp(1.5rem, 4vw, 2.5rem);
-        border-bottom: 1px solid var(--line);
-      }
-
-      .release-index h2 {
-        margin: 0 0 0.6rem;
-        color: var(--muted);
-        font-size: 0.76rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-      }
-
-      .release-index ol {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.25rem 1rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .release-index a {
-        display: block;
-        padding: 0.4rem 0.55rem;
-        border-radius: 6px;
-        color: var(--ink);
-        font-size: 0.86rem;
-        font-weight: 500;
-        text-decoration: none;
-      }
-
-      .release-index a:hover,
-      .release-index a:focus-visible {
-        outline: none;
-        background: #eff3f8;
-        color: #1d4ed8;
-      }
-
-      #latest,
-      .release-section {
-        scroll-margin-top: 1rem;
-      }
-
-      .release-heading {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1.5rem;
-        padding: clamp(1.5rem, 4vw, 2.5rem);
-        background: linear-gradient(135deg, var(--ink) 0%, #19386e 100%);
-        color: #fff;
-      }
-
-      .release-kicker {
-        margin: 0 0 0.45rem;
-        color: #d8edc8;
-        font-size: 0.76rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-      }
-
-      h2 {
-        margin: 0;
-        color: #fff;
-        font-size: clamp(1.65rem, 3.5vw, 2.15rem);
-        font-weight: 600;
-        letter-spacing: -0.04em;
-      }
-
-      .release-date {
-        flex: 0 0 auto;
-        margin: 0.45rem 0 0;
-        color: #e2e9f1;
-        font-size: 0.9rem;
-      }
-
-      .release-intro {
-        max-width: 780px;
-        margin: 0;
-        padding: 1.5rem clamp(1.5rem, 4vw, 2.5rem);
-        color: #526073;
-        font-size: 0.98rem;
-        line-height: 1.8;
-      }
-
-      .release-section {
-        padding: 1.7rem clamp(1.5rem, 4vw, 2.5rem);
-        border-top: 1px solid var(--line);
-      }
-
-      .release-section h3 {
-        display: flex;
-        align-items: center;
-        gap: 0.65rem;
-        margin: 0 0 0.85rem;
-        color: #15803d;
-        font-size: 1.08rem;
-        font-weight: 600;
-      }
-
-      .release-section h3::before {
-        width: 4px;
-        height: 1.15rem;
-        border-radius: 99px;
-        background: #15803d;
-        content: "";
-      }
-
-      .release-section ul {
-        display: grid;
-        gap: 0.7rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .release-section li {
-        position: relative;
-        padding-left: 1.15rem;
-        color: #526073;
-        font-size: 0.9rem;
-        line-height: 1.7;
-      }
-
-      .release-section li::before {
-        position: absolute;
-        top: 0.7em;
-        left: 0;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: #15803d;
-        content: "";
-      }
-
-      @media (max-width: 640px) {
-        main {
-          width: min(100% - 28px, 1040px);
-        }
-
-        .release-heading {
-          display: block;
-        }
-
-        .release-index ol {
-          grid-template-columns: 1fr;
-        }
-
-        .release-date {
-          margin-top: 0.6rem;
-        }
-
-      }
+      @media (max-width: 520px) { .page-main { padding: 16px 10px 40px; } .release-heading { padding: 20px; } }
+      @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .toc-chevron { transition: none; } }
     </style>
   </head>
   <body>
-    <main>
-      <article class="release-card" aria-labelledby="release-title">
-        <nav class="release-index" aria-label="Release notes index">
-          <h2>On this page</h2>
-          <ol>
-            <li><a href="#latest">Latest release: 6.9</a></li>
-            <li><a href="#project-submission-tool">Project Submission Tool</a></li>
-            <li><a href="#digital-forms">Digital Forms</a></li>
-            <li><a href="#review-tool">Review Tool</a></li>
-            <li><a href="#general-improvements">General Improvements</a></li>
-          </ol>
-        </nav>
-
-        <header class="release-heading" id="latest">
-          <div>
-            <p class="release-kicker">Latest release</p>
-            <h2 id="release-title">Release 6.9</h2>
-          </div>
-          <p class="release-date"><time datetime="2026-11-05">November 5, 2026</time></p>
+    <div class="page-layout">
+      <nav class="release-index toc" aria-label="Release notes index">
+        <h2>Contents</h2>
+        <ul class="toc-sections"><li class="toc-section"><div class="toc-main-row"><a class="top" href="#latest">Latest: 6.10 November 6, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.10 November 6, 2026" aria-expanded="true" aria-controls="toc-latest"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems expanded" id="toc-latest"><li><a href="#latest-project-tracker">Project Tracker</a></li><li><a href="#latest-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-9-november-5-2026">V 6.9 November 5, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.9 November 5, 2026" aria-expanded="false" aria-controls="toc-release-v-6-9-november-5-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-9-november-5-2026"><li><a href="#release-v-6-9-november-5-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-6-9-november-5-2026-digital-forms">Digital Forms</a></li><li><a href="#release-v-6-9-november-5-2026-review-tool">Review Tool</a></li><li><a href="#release-v-6-9-november-5-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-8-october-29-2026">V 6.8 October 29, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.8 October 29, 2026" aria-expanded="false" aria-controls="toc-release-v-6-8-october-29-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-8-october-29-2026"><li><a href="#release-v-6-8-october-29-2026-hot-fix">Hot Fix</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-7-october-27-2026">V 6.7 October 27, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.7 October 27, 2026" aria-expanded="false" aria-controls="toc-release-v-6-7-october-27-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-7-october-27-2026"><li><a href="#release-v-6-7-october-27-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-6-7-october-27-2026-ltms">LTMS</a></li><li><a href="#release-v-6-7-october-27-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-6-october-19-2026">V 6.6 October 19, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.6 October 19, 2026" aria-expanded="false" aria-controls="toc-release-v-6-6-october-19-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-6-october-19-2026"><li><a href="#release-v-6-6-october-19-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-6-6-october-19-2026-review-tool">Review Tool</a></li><li><a href="#release-v-6-6-october-19-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-5-hotfix-october-16-2026">V 6.5 Hotfix October 16, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.5 Hotfix October 16, 2026" aria-expanded="false" aria-controls="toc-release-v-6-5-hotfix-october-16-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-5-hotfix-october-16-2026"><li><a href="#release-v-6-5-hotfix-october-16-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-4-october-14-2026">V 6.4 October 14,2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.4 October 14,2026" aria-expanded="false" aria-controls="toc-release-v-6-4-october-14-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-4-october-14-2026"><li><a href="#release-v-6-4-october-14-2026-sla-and-prioritization-requests">SLA and Prioritization Requests</a></li><li><a href="#release-v-6-4-october-14-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-3-october-13-2026">V 6.3 October 13,2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.3 October 13,2026" aria-expanded="false" aria-controls="toc-release-v-6-3-october-13-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-3-october-13-2026"><li><a href="#release-v-6-3-october-13-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-6-3-october-13-2026-security">Security</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-2-october-06-2026">V 6.2 October 06,2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.2 October 06,2026" aria-expanded="false" aria-controls="toc-release-v-6-2-october-06-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-2-october-06-2026"><li><a href="#release-v-6-2-october-06-2026-review-tool">Review Tool</a></li><li><a href="#release-v-6-2-october-06-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-6-2-october-06-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-1-september-29-2026">V 6.1 September 29, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.1 September 29, 2026" aria-expanded="false" aria-controls="toc-release-v-6-1-september-29-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-1-september-29-2026"><li><a href="#release-v-6-1-september-29-2026-review-tool">Review Tool</a></li><li><a href="#release-v-6-1-september-29-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-6-1-september-29-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-6-1-september-29-2026-digital-forms">Digital Forms</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-6-0-september-23-2026">V 6.0 September 23, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 6.0 September 23, 2026" aria-expanded="false" aria-controls="toc-release-v-6-0-september-23-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-6-0-september-23-2026"><li><a href="#release-v-6-0-september-23-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-6-0-september-23-2026-review-tool">Review Tool</a></li><li><a href="#release-v-6-0-september-23-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-6-0-september-23-2026-digital-forms">Digital Forms</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-9-september-22-2026">V 5.9 September 22, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-8-september-22-2026">V 5.8 September 22, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 5.8 September 22, 2026" aria-expanded="false" aria-controls="toc-release-v-5-8-september-22-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-5-8-september-22-2026"><li><a href="#release-v-5-8-september-22-2026-review-tool">Review Tool</a></li><li><a href="#release-v-5-8-september-22-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-7-september-21-2026">V 5.7 September 21, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 5.7 September 21, 2026" aria-expanded="false" aria-controls="toc-release-v-5-7-september-21-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-5-7-september-21-2026"><li><a href="#release-v-5-7-september-21-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-5-7-september-21-2026-review-tool">Review Tool</a></li><li><a href="#release-v-5-7-september-21-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-6-september-17-2026">V 5.6 September 17, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 5.6 September 17, 2026" aria-expanded="false" aria-controls="toc-release-v-5-6-september-17-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-5-6-september-17-2026"><li><a href="#release-v-5-6-september-17-2026-project-submission-tool">Project Submission Tool</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-5-september-15-2026">V 5.5 September 15, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 5.5 September 15, 2026" aria-expanded="false" aria-controls="toc-release-v-5-5-september-15-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-5-5-september-15-2026"><li><a href="#release-v-5-5-september-15-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-5-5-september-15-2026-digital-forms">Digital Forms</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-4-september-14-2026">V 5.4 September 14, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 5.4 September 14, 2026" aria-expanded="false" aria-controls="toc-release-v-5-4-september-14-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-5-4-september-14-2026"><li><a href="#release-v-5-4-september-14-2026-review-tool">Review Tool</a></li><li><a href="#release-v-5-4-september-14-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-5-4-september-14-2026-digital-forms">Digital Forms</a></li><li><a href="#release-v-5-4-september-14-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-3-september-2-2026">V 5.3 September 2, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 5.3 September 2, 2026" aria-expanded="false" aria-controls="toc-release-v-5-3-september-2-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-5-3-september-2-2026"><li><a href="#release-v-5-3-september-2-2026-review-tool">Review Tool</a></li><li><a href="#release-v-5-3-september-2-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-5-3-september-2-2026-digital-forms">Digital Forms</a></li><li><a href="#release-v-5-3-september-2-2026-ltms">LTMS</a></li><li><a href="#release-v-5-3-september-2-2026-project-location-review-tool">Project Location Review Tool</a></li><li><a href="#release-v-5-3-september-2-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-2-august-25-2026">V 5.2 August 25, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 5.2 August 25, 2026" aria-expanded="false" aria-controls="toc-release-v-5-2-august-25-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-5-2-august-25-2026"><li><a href="#release-v-5-2-august-25-2026-review-tool">Review Tool</a></li><li><a href="#release-v-5-2-august-25-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-5-2-august-25-2026-forms">Forms</a></li><li><a href="#release-v-5-2-august-25-2026-ltms">LTMS</a></li><li><a href="#release-v-5-2-august-25-2026-project-tracker">Project Tracker</a></li><li><a href="#release-v-5-2-august-25-2026-pada-dashboard">PADA Dashboard</a></li><li><a href="#release-v-5-2-august-25-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-1-august-21-2026">V 5.1 August 21, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-5-0-august-17-2026">V 5.0 August 17, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-99-august-14-2026">V 4.99 August 14, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-98-august-13-2026">V 4.98 August 13, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.98 August 13, 2026" aria-expanded="false" aria-controls="toc-release-v-4-98-august-13-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-98-august-13-2026"><li><a href="#release-v-4-98-august-13-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-98-august-13-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-4-98-august-13-2026-digital-forms">Digital Forms</a></li><li><a href="#release-v-4-98-august-13-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-98-august-13-2026-ltms">LTMS</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-97-august-7-2026">V 4.97 August 7, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-96-august-6-2026">V 4.96 August 6, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.96 August 6, 2026" aria-expanded="false" aria-controls="toc-release-v-4-96-august-6-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-96-august-6-2026"><li><a href="#release-v-4-96-august-6-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-96-august-6-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-4-96-august-6-2026-digital-forms">Digital Forms</a></li><li><a href="#release-v-4-96-august-6-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-96-august-6-2026-ltms">LTMS</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-95-july-31-2026">V 4.95 July 31, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-94-july-30-2026">V 4.94 July 30, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.94 July 30, 2026" aria-expanded="false" aria-controls="toc-release-v-4-94-july-30-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-94-july-30-2026"><li><a href="#release-v-4-94-july-30-2026-project-tracker">Project Tracker</a></li><li><a href="#release-v-4-94-july-30-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-4-94-july-30-2026-registry-automation">Registry Automation</a></li><li><a href="#release-v-4-94-july-30-2026-public-comment">Public Comment</a></li><li><a href="#release-v-4-94-july-30-2026-ltms">LTMS</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-93-july-28-2026">V 4.93 July 28, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.93 July 28, 2026" aria-expanded="false" aria-controls="toc-release-v-4-93-july-28-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-93-july-28-2026"><li><a href="#release-v-4-93-july-28-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-4-93-july-28-2026-ltms">LTMS</a></li><li><a href="#release-v-4-93-july-28-2026-registry-synchronization">Registry Synchronization</a></li><li><a href="#release-v-4-93-july-28-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-93-july-28-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-92-july-28-2026">V 4.92 July 28, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.92 July 28, 2026" aria-expanded="false" aria-controls="toc-release-v-4-92-july-28-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-92-july-28-2026"><li><a href="#release-v-4-92-july-28-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-92-july-28-2026-registry-synchronization">Registry Synchronization</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-91-july-26-2026">V 4.91 July 26, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.91 July 26, 2026" aria-expanded="false" aria-controls="toc-release-v-4-91-july-26-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-91-july-26-2026"><li><a href="#release-v-4-91-july-26-2026-registry-synchronization">Registry Synchronization</a></li><li><a href="#release-v-4-91-july-26-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-4-91-july-26-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-91-july-26-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-90-july-21-2026">V 4.90 July 21, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.90 July 21, 2026" aria-expanded="false" aria-controls="toc-release-v-4-90-july-21-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-90-july-21-2026"><li><a href="#release-v-4-90-july-21-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-90-july-21-2026-ltms">LTMS</a></li><li><a href="#release-v-4-90-july-21-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-89-july-9-2026">V 4.89 July 9, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-88-july-7-2026">V 4.88 July 7, 2026</a></div></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-87-july-1-2026">V 4.87 July 1, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.87 July 1, 2026" aria-expanded="false" aria-controls="toc-release-v-4-87-july-1-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-87-july-1-2026"><li><a href="#release-v-4-87-july-1-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-87-july-1-2026-project-submission-tool">Project Submission Tool</a></li><li><a href="#release-v-4-87-july-1-2026-afolu-nprt">AFOLU NPRT</a></li><li><a href="#release-v-4-87-july-1-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-87-july-1-2026-ltms">LTMS</a></li><li><a href="#release-v-4-87-july-1-2026-pada-dashboard">PADA Dashboard</a></li><li><a href="#release-v-4-87-july-1-2026-pdf-extraction">PDF Extraction</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-86-june23-2026">V 4.86 June23, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.86 June23, 2026" aria-expanded="false" aria-controls="toc-release-v-4-86-june23-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-86-june23-2026"><li><a href="#release-v-4-86-june23-2026-review-tool">Review Tool</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-85-june17-2026">V 4.85 June17, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.85 June17, 2026" aria-expanded="false" aria-controls="toc-release-v-4-85-june17-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-85-june17-2026"><li><a href="#release-v-4-85-june17-2026-pada-request">PADA Request</a></li><li><a href="#release-v-4-85-june17-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-84-june-02-2026">V 4.84 June 02, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.84 June 02, 2026" aria-expanded="false" aria-controls="toc-release-v-4-84-june-02-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-84-june-02-2026"><li><a href="#release-v-4-84-june-02-2026-digital-project-submission">Digital Project Submission</a></li><li><a href="#release-v-4-84-june-02-2026-pada-request">PADA Request</a></li><li><a href="#release-v-4-84-june-02-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-84-june-02-2026-ltms">LTMS</a></li><li><a href="#release-v-4-84-june-02-2026-project-tracker">Project Tracker</a></li><li><a href="#release-v-4-84-june-02-2026-plrt">PLRT</a></li><li><a href="#release-v-4-84-june-02-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-83-may-20-2026">V 4.83 May 20, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.83 May 20, 2026" aria-expanded="false" aria-controls="toc-release-v-4-83-may-20-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-83-may-20-2026"><li><a href="#release-v-4-83-may-20-2026-digital-submission">Digital Submission</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-82-may-13-2026">V 4.82 May 13, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.82 May 13, 2026" aria-expanded="false" aria-controls="toc-release-v-4-82-may-13-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-82-may-13-2026"><li><a href="#release-v-4-82-may-13-2026-digital-forms">Digital Forms</a></li><li><a href="#release-v-4-82-may-13-2026-digital-submission">Digital Submission</a></li><li><a href="#release-v-4-82-may-13-2026-prr">PRR</a></li><li><a href="#release-v-4-82-may-13-2026-project-tracker">Project Tracker</a></li><li><a href="#release-v-4-82-may-13-2026-review-tool">Review Tool</a></li><li><a href="#release-v-4-82-may-13-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-81-may-7-2026">V 4.81 May 7, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.81 May 7, 2026" aria-expanded="false" aria-controls="toc-release-v-4-81-may-7-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-81-may-7-2026"><li><a href="#release-v-4-81-may-7-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-80-may-5-2026">V 4.80 May 5, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.80 May 5, 2026" aria-expanded="false" aria-controls="toc-release-v-4-80-may-5-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-80-may-5-2026"><li><a href="#release-v-4-80-may-5-2026-user-management-system">User Management System</a></li><li><a href="#release-v-4-80-may-5-2026-digital-forms">Digital Forms</a></li><li><a href="#release-v-4-80-may-5-2026-digital-submission">Digital Submission</a></li><li><a href="#release-v-4-80-may-5-2026-prr">PRR</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-79-may-1-2026-hotfix">V 4.79 May 1, 2026 (Hotfix)</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.79 May 1, 2026 (Hotfix)" aria-expanded="false" aria-controls="toc-release-v-4-79-may-1-2026-hotfix"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-79-may-1-2026-hotfix"><li><a href="#release-v-4-79-may-1-2026-hotfix-digital-submission">Digital Submission</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-78-april-30-2026">V 4.78 April 30, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.78 April 30, 2026" aria-expanded="false" aria-controls="toc-release-v-4-78-april-30-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-78-april-30-2026"><li><a href="#release-v-4-78-april-30-2026-exemption-request">Exemption Request</a></li><li><a href="#release-v-4-78-april-30-2026-afolu">AFOLU</a></li><li><a href="#release-v-4-78-april-30-2026-prr">PRR</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-77-april-29-2026">V 4.77 April 29, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.77 April 29, 2026" aria-expanded="false" aria-controls="toc-release-v-4-77-april-29-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-77-april-29-2026"><li><a href="#release-v-4-77-april-29-2026-novs">NOVS</a></li><li><a href="#release-v-4-77-april-29-2026-dpm">DPM</a></li><li><a href="#release-v-4-77-april-29-2026-ltms">LTMS</a></li><li><a href="#release-v-4-77-april-29-2026-public-comments">Public Comments</a></li><li><a href="#release-v-4-77-april-29-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-76-april-23-2026">V 4.76 April 23, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.76 April 23, 2026" aria-expanded="false" aria-controls="toc-release-v-4-76-april-23-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-76-april-23-2026"><li><a href="#release-v-4-76-april-23-2026-dpm">DPM</a></li><li><a href="#release-v-4-76-april-23-2026-reviews">Reviews</a></li><li><a href="#release-v-4-76-april-23-2026-project-location-review-tool-plrt">Project Location Review Tool (PLRT)</a></li><li><a href="#release-v-4-76-april-23-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-76-april-23-2026-public-consultation">Public consultation</a></li><li><a href="#release-v-4-76-april-23-2026-public-comment-feature">Public Comment Feature</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-75-april-16-2026">V 4.75 April 16, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.75 April 16, 2026" aria-expanded="false" aria-controls="toc-release-v-4-75-april-16-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-75-april-16-2026"><li><a href="#release-v-4-75-april-16-2026-dpm">DPM</a></li><li><a href="#release-v-4-75-april-16-2026-requantification">Requantification</a></li><li><a href="#release-v-4-75-april-16-2026-reviews">Reviews</a></li><li><a href="#release-v-4-75-april-16-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-74-april-13-2026">V 4.74 April 13, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.74 April 13, 2026" aria-expanded="false" aria-controls="toc-release-v-4-74-april-13-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-74-april-13-2026"><li><a href="#release-v-4-74-april-13-2026-ltms">LTMS</a></li><li><a href="#release-v-4-74-april-13-2026-pada">PADA</a></li><li><a href="#release-v-4-74-april-13-2026-novs">NOVS</a></li><li><a href="#release-v-4-74-april-13-2026-reviews">Reviews</a></li><li><a href="#release-v-4-74-april-13-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-73-april-7-2026">V 4.73 April 7, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.73 April 7, 2026" aria-expanded="false" aria-controls="toc-release-v-4-73-april-7-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-73-april-7-2026"><li><a href="#release-v-4-73-april-7-2026-vcs">VCS</a></li><li><a href="#release-v-4-73-april-7-2026-pada-dashboard">PADA Dashboard</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-72-april-6-2026">V 4.72 April 6, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.72 April 6, 2026" aria-expanded="false" aria-controls="toc-release-v-4-72-april-6-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-72-april-6-2026"><li><a href="#release-v-4-72-april-6-2026-dpm">DPM</a></li><li><a href="#release-v-4-72-april-6-2026-ltms">LTMS</a></li><li><a href="#release-v-4-72-april-6-2026-novs">NOVS</a></li><li><a href="#release-v-4-72-april-6-2026-novs-2">NOVS</a></li><li><a href="#release-v-4-72-april-6-2026-reviews">Reviews</a></li><li><a href="#release-v-4-72-april-6-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-71-march-31-2026">V 4.71 March 31, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.71 March 31, 2026" aria-expanded="false" aria-controls="toc-release-v-4-71-march-31-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-71-march-31-2026"><li><a href="#release-v-4-71-march-31-2026-afolu-and-gcs-nprt">AFOLU and GCS NPRT</a></li><li><a href="#release-v-4-71-march-31-2026-vcs-reps">VCS Reps</a></li><li><a href="#release-v-4-71-march-31-2026-reviews">Reviews</a></li><li><a href="#release-v-4-71-march-31-2026-ltms">LTMS</a></li><li><a href="#release-v-4-71-march-31-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-70-march-26-2026">V 4.70 March 26, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.70 March 26, 2026" aria-expanded="false" aria-controls="toc-release-v-4-70-march-26-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-70-march-26-2026"><li><a href="#release-v-4-70-march-26-2026-dpm">DPM</a></li><li><a href="#release-v-4-70-march-26-2026-ltms">LTMS</a></li><li><a href="#release-v-4-70-march-26-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-70-march-26-2026-reviews">Reviews</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-69-march-19-2026">V 4.69 March 19, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.69 March 19, 2026" aria-expanded="false" aria-controls="toc-release-v-4-69-march-19-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-69-march-19-2026"><li><a href="#release-v-4-69-march-19-2026-dpm">DPM</a></li><li><a href="#release-v-4-69-march-19-2026-ltms">LTMS</a></li><li><a href="#release-v-4-69-march-19-2026-reviews">Reviews</a></li><li><a href="#release-v-4-69-march-19-2026-issuances">Issuances</a></li><li><a href="#release-v-4-69-march-19-2026-novs">NOVS</a></li><li><a href="#release-v-4-69-march-19-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-68-march-16-2026">V 4.68 March 16, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.68 March 16, 2026" aria-expanded="false" aria-controls="toc-release-v-4-68-march-16-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-68-march-16-2026"><li><a href="#release-v-4-68-march-16-2026-novs">NOVS</a></li><li><a href="#release-v-4-68-march-16-2026-reviews">Reviews</a></li><li><a href="#release-v-4-68-march-16-2026-dpm">DPM</a></li><li><a href="#release-v-4-68-march-16-2026-ltms">LTMS</a></li><li><a href="#release-v-4-68-march-16-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-67-march-15-2026">V 4.67 March 15, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.67 March 15, 2026" aria-expanded="false" aria-controls="toc-release-v-4-67-march-15-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-67-march-15-2026"><li><a href="#release-v-4-67-march-15-2026-reviews">Reviews</a></li><li><a href="#release-v-4-67-march-15-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-67-march-15-2026-dpm">DPM</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-66-march-11-2026">V 4.66 March 11, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.66 March 11, 2026" aria-expanded="false" aria-controls="toc-release-v-4-66-march-11-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-66-march-11-2026"><li><a href="#release-v-4-66-march-11-2026-dpm">DPM</a></li><li><a href="#release-v-4-66-march-11-2026-document-extraction">Document Extraction</a></li><li><a href="#release-v-4-66-march-11-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-65-march-5-2026">V 4.65 March 5, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.65 March 5, 2026" aria-expanded="false" aria-controls="toc-release-v-4-65-march-5-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-65-march-5-2026"><li><a href="#release-v-4-65-march-5-2026-novs">NOVS</a></li><li><a href="#release-v-4-65-march-5-2026-dpm">DPM</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-64-march-3-2026">V 4.64 March 3, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.64 March 3, 2026" aria-expanded="false" aria-controls="toc-release-v-4-64-march-3-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-64-march-3-2026"><li><a href="#release-v-4-64-march-3-2026-project-tracker">Project Tracker</a></li><li><a href="#release-v-4-64-march-3-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-64-march-3-2026-reviews">Reviews</a></li><li><a href="#release-v-4-64-march-3-2026-dpm">DPM</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-63-february-26-2026">V 4.63 February 26, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.63 February 26, 2026" aria-expanded="false" aria-controls="toc-release-v-4-63-february-26-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-63-february-26-2026"><li><a href="#release-v-4-63-february-26-2026-dpm">DPM</a></li><li><a href="#release-v-4-63-february-26-2026-vcs-representations">VCS Representations</a></li><li><a href="#release-v-4-63-february-26-2026-prr">PRR</a></li><li><a href="#release-v-4-63-february-26-2026-ltms">LTMS</a></li><li><a href="#release-v-4-63-february-26-2026-review-tool">Review Tool</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-62-february-19-2026">V 4.62 February 19, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.62 February 19, 2026" aria-expanded="false" aria-controls="toc-release-v-4-62-february-19-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-62-february-19-2026"><li><a href="#release-v-4-62-february-19-2026-dpm">DPM</a></li><li><a href="#release-v-4-62-february-19-2026-ltms">LTMS</a></li><li><a href="#release-v-4-62-february-19-2026-reviews">Reviews</a></li><li><a href="#release-v-4-62-february-19-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-61-february-13-2026">V 4.61 February 13, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.61 February 13, 2026" aria-expanded="false" aria-controls="toc-release-v-4-61-february-13-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-61-february-13-2026"><li><a href="#release-v-4-61-february-13-2026-dpm">DPM</a></li><li><a href="#release-v-4-61-february-13-2026-ltms">LTMS</a></li><li><a href="#release-v-4-61-february-13-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-60-february-12-2026">V 4.60 February 12, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.60 February 12, 2026" aria-expanded="false" aria-controls="toc-release-v-4-60-february-12-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-60-february-12-2026"><li><a href="#release-v-4-60-february-12-2026-dpm">DPM</a></li><li><a href="#release-v-4-60-february-12-2026-reviews">Reviews</a></li><li><a href="#release-v-4-60-february-12-2026-projects">Projects</a></li><li><a href="#release-v-4-60-february-12-2026-afolu-and-gcs-nprt">AFOLU and GCS NPRT</a></li><li><a href="#release-v-4-60-february-12-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-59-february-6-2026">V 4.59 February 6, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.59 February 6, 2026" aria-expanded="false" aria-controls="toc-release-v-4-59-february-6-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-59-february-6-2026"><li><a href="#release-v-4-59-february-6-2026-dpm">DPM</a></li><li><a href="#release-v-4-59-february-6-2026-reviews">Reviews</a></li><li><a href="#release-v-4-59-february-6-2026-ltms">LTMS</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-58-february-5-2026">V 4.58 February 5, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.58 February 5, 2026" aria-expanded="false" aria-controls="toc-release-v-4-58-february-5-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-58-february-5-2026"><li><a href="#release-v-4-58-february-5-2026-dpm">DPM</a></li><li><a href="#release-v-4-58-february-5-2026-scope-3">Scope 3</a></li><li><a href="#release-v-4-58-february-5-2026-novs">NOVS</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-57-february-4-2026">V 4.57 February 4, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.57 February 4, 2026" aria-expanded="false" aria-controls="toc-release-v-4-57-february-4-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-57-february-4-2026"><li><a href="#release-v-4-57-february-4-2026-dpm">DPM</a></li><li><a href="#release-v-4-57-february-4-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-57-february-4-2026-reviews">Reviews</a></li><li><a href="#release-v-4-57-february-4-2026-ltms">LTMS</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-56-jan-29-2026">V 4.56 Jan 29, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.56 Jan 29, 2026" aria-expanded="false" aria-controls="toc-release-v-4-56-jan-29-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-56-jan-29-2026"><li><a href="#release-v-4-56-jan-29-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-55-jan-26-2026">V 4.55 Jan 26, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.55 Jan 26, 2026" aria-expanded="false" aria-controls="toc-release-v-4-55-jan-26-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-55-jan-26-2026"><li><a href="#release-v-4-55-jan-26-2026-data-api">Data API</a></li><li><a href="#release-v-4-55-jan-26-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-55-jan-26-2026-reviews">Reviews</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-54-jan-20-2026">V 4.54 Jan 20, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.54 Jan 20, 2026" aria-expanded="false" aria-controls="toc-release-v-4-54-jan-20-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-54-jan-20-2026"><li><a href="#release-v-4-54-jan-20-2026-dpm">DPM</a></li><li><a href="#release-v-4-54-jan-20-2026-reviews">Reviews</a></li><li><a href="#release-v-4-54-jan-20-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-53-jan-16-2026">V 4.53 Jan 16, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.53 Jan 16, 2026" aria-expanded="false" aria-controls="toc-release-v-4-53-jan-16-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-53-jan-16-2026"><li><a href="#release-v-4-53-jan-16-2026-dpm">DPM</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-52-jan-15-2026">V 4.52 Jan 15, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.52 Jan 15, 2026" aria-expanded="false" aria-controls="toc-release-v-4-52-jan-15-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-52-jan-15-2026"><li><a href="#release-v-4-52-jan-15-2026-dpm">DPM</a></li><li><a href="#release-v-4-52-jan-15-2026-pada">PADA</a></li><li><a href="#release-v-4-52-jan-15-2026-novs">NOVS</a></li><li><a href="#release-v-4-52-jan-15-2026-miscellaneous">Miscellaneous</a></li><li><a href="#release-v-4-52-jan-15-2026-reviews">Reviews</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-51-jan-9-2026">V 4.51 Jan 9, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.51 Jan 9, 2026" aria-expanded="false" aria-controls="toc-release-v-4-51-jan-9-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-51-jan-9-2026"><li><a href="#release-v-4-51-jan-9-2026-reviews">Reviews</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-50-jan-7-2026">V 4.50 Jan 7, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.50 Jan 7, 2026" aria-expanded="false" aria-controls="toc-release-v-4-50-jan-7-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-50-jan-7-2026"><li><a href="#release-v-4-50-jan-7-2026-dpm">DPM</a></li><li><a href="#release-v-4-50-jan-7-2026-reviews">Reviews</a></li><li><a href="#release-v-4-50-jan-7-2026-ltms">LTMS</a></li><li><a href="#release-v-4-50-jan-7-2026-miscellaneous">Miscellaneous</a></li></ul></li>
+<li class="toc-section"><div class="toc-main-row"><a class="top" href="#release-v-4-49-jan-5-2026">V 4.49 Jan 5, 2026</a><button class="toc-toggle" type="button" aria-label="Toggle sections for V 4.49 Jan 5, 2026" aria-expanded="false" aria-controls="toc-release-v-4-49-jan-5-2026"><span class="toc-chevron" aria-hidden="true"></span></button></div><ul class="toc-subitems" id="toc-release-v-4-49-jan-5-2026"><li><a href="#release-v-4-49-jan-5-2026-digital-project-submission">Digital Project Submission</a></li><li><a href="#release-v-4-49-jan-5-2026-scope3">Scope3</a></li><li><a href="#release-v-4-49-jan-5-2026-miscellaneous">Miscellaneous</a></li></ul></li></ul>
+      </nav>
+      <main class="page-main">
+        <header class="page-heading">
+          <p class="page-year">2026</p>
+          <h1>Project Hub Release Notes</h1>
+          <p>We’re excited to share the following Project Hub updates</p>
         </header>
+        <section class="release-card" id="latest" aria-labelledby="release-title-v-6-10-november-6-2026">
+<header class="release-heading"><span class="release-status">Up Coming</span><h2 id="release-title-v-6-10-november-6-2026">V 6.10 November 6, 2026</h2></header>
+<section class="release-section" aria-labelledby="latest-project-tracker"><h3 id="latest-project-tracker">Project Tracker</h3>
+<ul class="release-points"><li>There is now a maximum of three prioritization requests per portfolio, except for the unlimited E&amp;I portfolio, so that requests for individual or joint projects are accepted only when all applicable portfolios have available capacity.</li><li>Stakeholders will now receive more detail on what items are needed for a prioritization request to be made</li></ul>
+</section>
+<section class="release-section" aria-labelledby="latest-miscellaneous"><h3 id="latest-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Updated registry sync from project hub to retain any saved documents for if there is a sync issue</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-9-november-5-2026" aria-labelledby="release-title-v-6-9-november-5-2026">
+<header class="release-heading"><h2 id="release-title-v-6-9-november-5-2026">V 6.9 November 5, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-9-november-5-2026-project-submission-tool"><h3 id="release-v-6-9-november-5-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Updated calculation input conditional rules</li><li>Fixed an issue where the monitoring period was not printed on the monitoring report PDF for custom methodology templates</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-9-november-5-2026-digital-forms"><h3 id="release-v-6-9-november-5-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Admins can now filter NOVS list by project proponent</li><li>Registry users now must select a reason when “Deny” is chosen so that a more decision letter can be generated for the user</li><li>Users now have the option to update pre-approved or returned exemption requests</li><li>Updated date format in the NOVS export file</li><li>Fixed an issue where the submit button was not available for some multi project proponent communications agreements</li><li>If additional VVB contact is specified on exemption request form, the VVB will be copied on email notifications sent for the request</li><li>Admins can download a PDF report that contains all comments left for an exemption request</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-9-november-5-2026-review-tool"><h3 id="release-v-6-9-november-5-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>After a project is re-assigned with a new category the status stays “Assigned”</li><li>“This field is Required” messages now stay on screen for reviewers until all required fields are entered</li><li>The change finding typology confirmation dialogue box is now shown when an issue type is changed</li><li>When an issue type is added in one document it now gets displayed in other documents within the same review</li><li>When editing documents, findings, and making comments changes are automatically saved</li><li>Update delivery of deadline warning emails to account for new dates after exemption requests are approved</li><li>Fixed an issue where Verra response was not properly showing in some PRR’s</li><li>Fixed an issue that caused PRR rounds to update incorrectly</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-9-november-5-2026-miscellaneous"><h3 id="release-v-6-9-november-5-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>UI updates to enhance the overall look, feel, and functionality of the Project Hub</li><li>Implemented Zoho/Raas billing API with our registry sync service so that billing information can be synced into Project Hub</li><li>Registry information can be seen on Verra public site</li><li>Automated data extraction during registry sync process</li><li>Added filter to data export</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-8-october-29-2026" aria-labelledby="release-title-v-6-8-october-29-2026">
+<header class="release-heading"><h2 id="release-title-v-6-8-october-29-2026">V 6.8 October 29, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-8-october-29-2026-hot-fix"><h3 id="release-v-6-8-october-29-2026-hot-fix">Hot Fix</h3>
+<ul class="release-points"><li>Monitoring and validation/verification reports can now be created from any project description that exists in registry, even with the PD is being revised</li><li>Removing previously executed migration files to resolve memory issues</li><li>Add multiple date option in stakeholder consultation</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-7-october-27-2026" aria-labelledby="release-title-v-6-7-october-27-2026">
+<header class="release-heading"><h2 id="release-title-v-6-7-october-27-2026">V 6.7 October 27, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-7-october-27-2026-project-submission-tool"><h3 id="release-v-6-7-october-27-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Scope 3 document upload enhancements</li><li>Removed a couple unused parameters from ACM0001 monitoring sections</li><li>Form builder updates for admins</li><li>Instituted common functionality across methodology integration</li><li>Updated methodology editor for plastic methodologies</li><li>Fixed error in monitoring report where file upload field is null</li><li>Updates to digital gateway API resource documentation</li><li>Added DSP and Guardian onboarding pages</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-7-october-27-2026-ltms"><h3 id="release-v-6-7-october-27-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Biomass comparison updates</li><li>Updated deforestation scripting and data storage to better handle large scaled projects</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-7-october-27-2026-miscellaneous"><h3 id="release-v-6-7-october-27-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>“Uploaded by” field in backend data now properly updates for documents created by Project Hub applications</li><li>Fix for document downloads not working correctly on public comment pages</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-6-october-19-2026" aria-labelledby="release-title-v-6-6-october-19-2026">
+<header class="release-heading"><h2 id="release-title-v-6-6-october-19-2026">V 6.6 October 19, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-6-october-19-2026-project-submission-tool"><h3 id="release-v-6-6-october-19-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Audit history table is now shown in the PDF print out for project descriptions</li><li>When user adds a registry project ID to an existing document the associated registry project data updates as well</li><li>Template builder update for admins</li><li>Update applicability criteria section of joint project description monitoring report</li><li>ABSIIIBM validation fix</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-6-october-19-2026-review-tool"><h3 id="release-v-6-6-october-19-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>“Withdraw and Close” button is now always available to reviewers</li><li>State change log updates to more accurately identify the reviewer</li><li>Added some missing technical review questions</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-6-october-19-2026-miscellaneous"><h3 id="release-v-6-6-october-19-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Modification of the text for Verra Guardian portal requests</li><li>Public comment page text updates</li><li>Dashboard updates</li><li>Added Grievance intake form module</li><li>Update case detail sync to run every 15 minutes</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-5-hotfix-october-16-2026" aria-labelledby="release-title-v-6-5-hotfix-october-16-2026">
+<header class="release-heading"><h2 id="release-title-v-6-5-hotfix-october-16-2026">V 6.5 Hotfix October 16, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-5-hotfix-october-16-2026-miscellaneous"><h3 id="release-v-6-5-hotfix-october-16-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Update Weekly Adoption Metrics Report so that correct PRR status are shown</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-4-october-14-2026" aria-labelledby="release-title-v-6-4-october-14-2026">
+<header class="release-heading"><h2 id="release-title-v-6-4-october-14-2026">V 6.4 October 14,2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-4-october-14-2026-sla-and-prioritization-requests"><h3 id="release-v-6-4-october-14-2026-sla-and-prioritization-requests">SLA and Prioritization Requests</h3>
+<ul class="release-points"><li>Updated current queue counts with portfolio counts so that project proponents can quickly understand whether the portfolio is open, nearing capacity or at capacity</li><li>Updated the prioritization fees display to calculate prioritization and issuance based on the type of request submitted so that applicable feeds are transparent, consistent and accurately reflected in the payment process</li><li>Updated project hub automatic email notifications</li><li>Enabled prioritization for additional request types so that cases requiring expedited attention can be identified and handled accordingly by Verra</li><li>Updated fee and terms and conditions for prioritization requests</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-4-october-14-2026-miscellaneous"><h3 id="release-v-6-4-october-14-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Updated welcome text for requesting access to Verra Guardian Portal and increased text size</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-3-october-13-2026" aria-labelledby="release-title-v-6-3-october-13-2026">
+<header class="release-heading"><h2 id="release-title-v-6-3-october-13-2026">V 6.3 October 13,2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-3-october-13-2026-project-submission-tool"><h3 id="release-v-6-3-october-13-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Corrected issue in which not all text was properly displaying in the project boundary section of AM0009 PDFs</li><li>Updates to prevent concurrent edit overwriting in PD’s and MR’s</li><li>Added horizontal scroll bar to error log that allows user to see full contents of longer error messages</li><li>Fixed an issue where VVB’s were unable to upload PDF to the appendix section of verification reports</li><li>Corrected formatting of project boundary table in PDF printout</li><li>Fixed a form builder error for admins</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-3-october-13-2026-security"><h3 id="release-v-6-3-october-13-2026-security">Security</h3>
+<ul class="release-points"><li>After 30 minutes of inactivity, users will receive a 2-minute warning before being automatically logged out; any unsaved changes may be lost if they are not saved before the session expires.</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-2-october-06-2026" aria-labelledby="release-title-v-6-2-october-06-2026">
+<header class="release-heading"><h2 id="release-title-v-6-2-october-06-2026">V 6.2 October 06,2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-2-october-06-2026-review-tool"><h3 id="release-v-6-2-october-06-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Round closed date now shows for final round after a PRR has been approved</li><li>Updates to simultaneous editing of PRR’s</li><li>Updated details now shown in document listing page</li><li>Reviewers can now skip reviewing documents that share the same name</li><li>Fixed an issue where findings reordering’s were not being saved</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-2-october-06-2026-project-submission-tool"><h3 id="release-v-6-2-october-06-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Project description Scope 3 submissions now also upload GeoJSON or KML file to registry</li><li>Added visual walkthrough for Scope 3 project description guidance</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-2-october-06-2026-miscellaneous"><h3 id="release-v-6-2-october-06-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Digital forms uploaded to registry via registry automation now also appear in backend data</li><li>CKeditor 5 security updates</li><li>Added a search bar to the methodology page for admins</li><li>Added get all accounts endpoint to Project Hub account API</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-1-september-29-2026" aria-labelledby="release-title-v-6-1-september-29-2026">
+<header class="release-heading"><h2 id="release-title-v-6-1-september-29-2026">V 6.1 September 29, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-1-september-29-2026-review-tool"><h3 id="release-v-6-1-september-29-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>After reviewer completes project profiling and proceeds to risk assessment, they are now taken to the risk assessment checklist page</li><li>When an exemption request for a PRR has been approved “N/A” now appears in the justification section for the request</li><li>A review progress bar is now visible in all review pages indicating the level of completeness of a review</li><li>Updated naming convention in the case status for newly created project review cases in SuiteCRM</li><li>Resolved an issue in which prevented users with appropriate permissions from editing shared PRR</li><li>Added user guidance for typology headings</li><li>Correct SuiteCRM case status is now applied for when a peer review is completed</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-1-september-29-2026-miscellaneous"><h3 id="release-v-6-1-september-29-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Timeline calculator user guide has been added to the Support page</li><li>Updated the copy for project billing confirmation email</li><li>Fixed an issue in which certain users were unable to download AFOLU PDF printouts</li><li>Resolved an issue in which shared projects were not appearing in project tracker for some VVB’s</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-1-september-29-2026-project-submission-tool"><h3 id="release-v-6-1-september-29-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Added missing section numbers for a couple items in the VM0048 monitoring section</li><li>VM0038 calculation engine update</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-1-september-29-2026-digital-forms"><h3 id="release-v-6-1-september-29-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Resolved an issue with NOVS forms now allowing users to see all forms created within their account</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-6-0-september-23-2026" aria-labelledby="release-title-v-6-0-september-23-2026">
+<header class="release-heading"><h2 id="release-title-v-6-0-september-23-2026">V 6.0 September 23, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-6-0-september-23-2026-project-submission-tool"><h3 id="release-v-6-0-september-23-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Updated user permissions for project description, monitoring report, and common templates for enhanced security</li><li>Updated descriptions for ACM0001 parameters</li><li>Added additional on-screen user guidance tips in all methodologies</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-0-september-23-2026-review-tool"><h3 id="release-v-6-0-september-23-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Fixed an issue in which an exception error was displayed when duplicate document names were detected</li><li>AI review status is now visible in the review comparison report</li><li>AI review can be initiated from any review dashboard</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-0-september-23-2026-miscellaneous"><h3 id="release-v-6-0-september-23-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Updated account and project related data syncs from registry to Project Hub for better accuracy</li><li>Updates to AI chat bot Juniper</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-6-0-september-23-2026-digital-forms"><h3 id="release-v-6-0-september-23-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Resolved an issue where file attachments added to new NOVS forms were producing an error</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-9-september-22-2026" aria-labelledby="release-title-v-5-9-september-22-2026">
+<header class="release-heading"><h2 id="release-title-v-5-9-september-22-2026">V 5.9 September 22, 2026</h2></header>
+<p class="release-note">Hot fix: Updated Guardian tenant ID for production</p>
+</section>
+        <section class="release-card" id="release-v-5-8-september-22-2026" aria-labelledby="release-title-v-5-8-september-22-2026">
+<header class="release-heading"><h2 id="release-title-v-5-8-september-22-2026">V 5.8 September 22, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-5-8-september-22-2026-review-tool"><h3 id="release-v-5-8-september-22-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Not Applicable and Inconclusive statuses have now been added from AI agent</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-8-september-22-2026-miscellaneous"><h3 id="release-v-5-8-september-22-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>MapTiler API integration</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-7-september-21-2026" aria-labelledby="release-title-v-5-7-september-21-2026">
+<header class="release-heading"><h2 id="release-title-v-5-7-september-21-2026">V 5.7 September 21, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-5-7-september-21-2026-project-submission-tool"><h3 id="release-v-5-7-september-21-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>VM0044 Project boundary table formatting update</li><li>Added Treefera as a data service provider</li><li>Guardian Methodologies are now tagged in the methodology selection list</li><li>VM0033 calculation updates in the user interface</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-7-september-21-2026-review-tool"><h3 id="release-v-5-7-september-21-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Resolved an issue with documents not loading properly on the checklist finding page</li><li>Disabled bulk automation ai reviews</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-7-september-21-2026-miscellaneous"><h3 id="release-v-5-7-september-21-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>CCB only projects can now sync to Project Hub</li><li>Corrected a spelling error on the application request dashboard</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-6-september-17-2026" aria-labelledby="release-title-v-5-6-september-17-2026">
+<header class="release-heading"><h2 id="release-title-v-5-6-september-17-2026">V 5.6 September 17, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-5-6-september-17-2026-project-submission-tool"><h3 id="release-v-5-6-september-17-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>DMRV app registration for CarbonAI</li><li>Monitoring report updates for VM0047</li><li>PDF for submitted Scope 3 project descriptions now are automatically uploaded to registry</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-5-september-15-2026" aria-labelledby="release-title-v-5-5-september-15-2026">
+<header class="release-heading"><h2 id="release-title-v-5-5-september-15-2026">V 5.5 September 15, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-5-5-september-15-2026-project-submission-tool"><h3 id="release-v-5-5-september-15-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Scope 3 VCS 5.0 updates</li><li>DMRV app registration for aDryada</li><li>API for Guardian that exposes project name and project ID</li><li>Form validation field updates</li><li>ACM0001 parameter dependency updates</li><li>VM0044 Project boundary table update</li><li>Streamlined the PDF configuration settings for more stable performance</li><li>Updated labeling on Project ID/templates for monitoring/validation/verification report creation</li><li>Updated PDF print out for VM0033 to display ERR tables properly</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-5-september-15-2026-digital-forms"><h3 id="release-v-5-5-september-15-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Scope 3 representation deeds added</li><li>Fixed a validation error that some users were seeing when creating NOVS forms</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-4-september-14-2026" aria-labelledby="release-title-v-5-4-september-14-2026">
+<header class="release-heading"><h2 id="release-title-v-5-4-september-14-2026">V 5.4 September 14, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-5-4-september-14-2026-review-tool"><h3 id="release-v-5-4-september-14-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Fixed an issue preventing PRR from being closed after 4th round of review</li><li>Resolved a document download issue preventing PDF generation from a particular review</li><li>Approver role now inherits reviewer capabilities</li><li>Request corrections sent to project proponent now updates Suite CRM case status</li><li>Assigned reviewers name now appears in list view</li><li>Updated reviewer dashboard filters</li><li>Added filter in the distribution assignment module</li><li>Added search field in expert profile selection menu to make selecting reviewers easier</li><li>Updated wording of PRR finding templates to more accurately describe what action the VVB needs to take</li><li>Project review now shows full DPM UI in document view pane</li><li>SuiteCRM case status now changes to “under review” when request correction is approved</li><li>We can now monitor user engagement in review tool</li><li>Resolved an issue in which an error displayed for already reviewed documents</li><li>Ai review capabilities</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-4-september-14-2026-project-submission-tool"><h3 id="release-v-5-4-september-14-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Enhanced audit logging</li><li>Added “refresh content” button to methodology template editor for admins</li><li>VM0044 calculation and UI updates</li><li>AM0023 calculation and pdf print out updates</li><li>ACM0001 calculation and pdf print out formatting update</li><li>Added a universal exclude option to the user interface so that users can designate any items they do not want printed on the final PDF</li><li>Admins can import/export methodology templates</li><li>Enhancements for methodology template form builder</li><li>Fixed issue where monitoring report calculation was failing due to missing CSV data</li><li>Fixed an issue where Scope 3 projects calculation output was not displaying properly</li><li>Scope 3 project description can be submitted without calculation result</li><li>Fixed an issue where some PDF download requests caused an infinite loop</li><li>Validation errors upon submission for missing fields from the registry tab now take you directly to the field in question so that it can be updated</li><li>Implemented validation for project website field on cover page to display an error if an invalid URL is provided</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-4-september-14-2026-digital-forms"><h3 id="release-v-5-4-september-14-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>VCS 5 updates to representation deeds</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-4-september-14-2026-miscellaneous"><h3 id="release-v-5-4-september-14-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fixed discreprencies of PCP links from registry</li><li>PCP links added to registry when project status is updated in Project Hub</li><li>Updated registry account sync logic</li><li>Security updates</li><li>Review timeline calculator link has been added to Project Tracker</li><li>Fixed an issue where certain cases were not appearing in registry review in Suite CRM</li><li>Resolved an issue for multiple cronjob failures in all environments</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-3-september-2-2026" aria-labelledby="release-title-v-5-3-september-2-2026">
+<header class="release-heading"><h2 id="release-title-v-5-3-september-2-2026">V 5.3 September 2, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-5-3-september-2-2026-review-tool"><h3 id="release-v-5-3-september-2-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Fixed an issue with PRR dashboard scrolling</li><li>Fixed an issue in which an error was displaying for documents that have already been reviewed</li><li>Approvers/Reviewer feedback survey added when completing PRR’s or correction requests</li><li>Admins can export approver/reviewer survey feedback to an excel sheet</li><li>AI review assistance</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-3-september-2-2026-project-submission-tool"><h3 id="release-v-5-3-september-2-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>VM0051 calculation engine update</li><li>Fixed an issue that prevented VVB’s from creating verification and validation reports</li><li>DMRV data provider framework updates</li><li>Fix a KML upload related issue for Nature Framework project descriptions</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-3-september-2-2026-digital-forms"><h3 id="release-v-5-3-september-2-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Fixed an issue with the Requantification form entry UI in which some projects were disappearing from the project ID selection dropdown menu</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-3-september-2-2026-ltms"><h3 id="release-v-5-3-september-2-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Support for new NGIS endpoint</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-3-september-2-2026-project-location-review-tool"><h3 id="release-v-5-3-september-2-2026-project-location-review-tool">Project Location Review Tool</h3>
+<ul class="release-points"><li>Fixed an issue in which an invalid key error was displaying on the map</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-3-september-2-2026-miscellaneous"><h3 id="release-v-5-3-september-2-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fixed issue with public commenting period requiring sign-in inadvertently</li><li>Updates to headers/labels in SLA Calculator</li><li>Security enhancements</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-2-august-25-2026" aria-labelledby="release-title-v-5-2-august-25-2026">
+<header class="release-heading"><h2 id="release-title-v-5-2-august-25-2026">V 5.2 August 25, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-5-2-august-25-2026-review-tool"><h3 id="release-v-5-2-august-25-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Fixed an issue where a false “network connection lost” error was being generated.</li><li>Fixed “Notify VVB” option in Request Correction commenting feature so that the button is disabled if VVB information is missing.</li><li>Added project proponent contact email verification for newly created PRRs. If the PP&#x27;s email address is missing, an error message will pop-up advising the user that they must provide a valid email address before they are able to save the PRR.</li><li>Findings display improvements. Only findings added in relevant checkpoint questions will be displayed.</li><li>Fixed issue where VVB’s were not able to submit PRR extension requests</li><li>Comparison report is now available so that automated checklist outcomes can be reviewed against manual reviewer decisions</li><li>Implemented new logic for better handling of new findings being added to PRR by different users simultaneously</li><li>Project Related Rules and VVB Requirement Rules dropdown during Concurrent updates for Findings : When concurrent updates are made, dropdowns show the updated options for other users.</li><li>Clicking the Add New Finding button automatically save the new finding with a default placeholder title/subject: “Add Your Title”. This ensures the finding is saved and not affected by concurrent additions of new findings by other users.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-2-august-25-2026-project-submission-tool"><h3 id="release-v-5-2-august-25-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Resolved an issue where the “Project Scale and Estimated GHG Emission Reductions or Removals” table was missing on the PDF after calculation was completed</li><li>Added audit history table (section 1.2) to PDF print out</li><li>Removed an unneeded table from section 4.4</li><li>Updated logic for Non-Permanence risk section of ACM0001 to only display the NPR table if applicable to the project</li><li>For ACM0001 we now display parameter values based on uploaded csv file</li><li>VM0044 v1.2 calculation engine updates</li><li>Fixed formatting issue in VM0051 appendix PDF print out</li><li>Updated number formatting for PDF printout</li><li>Overall performance updates</li><li>Enable sectoral scope for selection using the custom methodology template</li><li>Updated project emission approach labels for VM0038 PDF printout</li><li>Updated logic to better handle large file uploads</li><li>Resolved an issue where module related parameters were not always populating for some methodologies in the Data and Parameters section for monitoring reports</li><li>DMRV API Documentation page updates</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-2-august-25-2026-forms"><h3 id="release-v-5-2-august-25-2026-forms">Forms</h3>
+<ul class="release-points"><li>Updated Communications Agreement notification settings</li><li>PADA requestor can now request a revision to their KML file if needed after full or partial payment is made</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-2-august-25-2026-ltms"><h3 id="release-v-5-2-august-25-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Security related enhancements</li><li>Updates to NGIS scheduling</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-2-august-25-2026-project-tracker"><h3 id="release-v-5-2-august-25-2026-project-tracker">Project Tracker</h3>
+<ul class="release-points"><li>Fixed an issue where projects were not displaying in VVB’s Project Tracker that contained multiple case references in the PRR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-2-august-25-2026-pada-dashboard"><h3 id="release-v-5-2-august-25-2026-pada-dashboard">PADA Dashboard</h3>
+<ul class="release-points"><li>Removed shapefile support</li><li>Updated request correction workflow</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-5-2-august-25-2026-miscellaneous"><h3 id="release-v-5-2-august-25-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Introducing Juniper, an AI support agent that can answer a variety of technical and project related questions</li><li>RAAS projects in “draft” status now properly sync to Project Hub</li><li>Generate and push PCP link during project sync</li><li>Security enhancements</li><li>Updated error code for failed project sync</li><li>Updated mapping for VVB and sub-accounts from Registry to Project Hub</li><li>Formatting updates to public comment page</li><li>Fixed an issue where certain documents were missing from CCB public comment page</li><li>Registry automation UI updates</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-5-1-august-21-2026" aria-labelledby="release-title-v-5-1-august-21-2026">
+<header class="release-heading"><h2 id="release-title-v-5-1-august-21-2026">V 5.1 August 21, 2026</h2></header>
+<p class="release-note">Hot fix: Exemption Request forms are now marked as commercially sensitive documents when uploaded to Registry</p>
+</section>
+        <section class="release-card" id="release-v-5-0-august-17-2026" aria-labelledby="release-title-v-5-0-august-17-2026">
+<header class="release-heading"><h2 id="release-title-v-5-0-august-17-2026">V 5.0 August 17, 2026</h2></header>
+<p class="release-note">Hot fix: Fixed a rendering issue in the Review Tool add findings page that prevents submit button and typology menu from being selectable</p>
+</section>
+        <section class="release-card" id="release-v-4-99-august-14-2026" aria-labelledby="release-title-v-4-99-august-14-2026">
+<header class="release-heading"><h2 id="release-title-v-4-99-august-14-2026">V 4.99 August 14, 2026</h2></header>
+<p class="release-note">Hot fix: AFOLU NPR records viewable due to project review permissions</p>
+</section>
+        <section class="release-card" id="release-v-4-98-august-13-2026" aria-labelledby="release-title-v-4-98-august-13-2026">
+<header class="release-heading"><h2 id="release-title-v-4-98-august-13-2026">V 4.98 August 13, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-98-august-13-2026-review-tool"><h3 id="release-v-4-98-august-13-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Reviewer/approver receives notification when a case has been re-assigned to them</li><li>Fee payment column has been added to registry review dashboard</li><li>In the assignment module you can now select the same user as both reviewer and approver</li><li>In the assignment module reviewers and approvers are made available depending on the methodology of the project being reviewed</li><li>Proof of contracting document type is now available for case review</li><li>Updates to document view pane</li><li>Improved simultaneous updates when working on PRR</li><li>Improved admin override feature</li><li>Added finding typology for PRR created by the Review Tool</li><li>Admins can now see a fee payment column in registry review dashboard</li><li>Fixed issue where review tool would write duplicate updates of case statuses</li><li>Reviewer Dashboard can tell what UI was used to create documents</li><li>Checklist admins can now make questions private</li><li>Resolved an issue in which the incorrect document count was being displayed on the reviewer dashboard</li><li>Removed restrictions on “Required 1” field for review type ordinary</li><li>Removed project assignment restrictions on review type filter</li><li>Deadline date now gets updated when an extension request has been approved</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-98-august-13-2026-project-submission-tool"><h3 id="release-v-4-98-august-13-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>VM0044 calculation updates</li><li>VM0042 calculation updates</li><li>Methodology bug fixes</li><li>Updated filters on dashboard giving user more ways to view their project documents</li><li>Acres &amp; Hectares column no longer displays on PDF when this item isn’t listed in the methodology</li><li>Fixed an issue in which users were getting an error when trying to create new project description using existing registry project ID</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-98-august-13-2026-digital-forms"><h3 id="release-v-4-98-august-13-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Exemption request form now filters request type based on project role</li><li>Fixed an issue preventing download of some NOVS forms</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-98-august-13-2026-miscellaneous"><h3 id="release-v-4-98-august-13-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Dropdown menus on project edit pages are now searchable</li><li>Backend database updates for PRR</li><li>RaaS projects in draft status now map to draft/pipeline status new in Project Hub</li><li>Multiple KML files can now be pushed to a project in RaaS</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-98-august-13-2026-ltms"><h3 id="release-v-4-98-august-13-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Configured external fire alerts to trigger automatically every 5 days</li><li>Integrated burned area into the LTMS dashboard</li><li>Project status dropdown menu now includes missing statuses</li><li>Tranisitioned to new NGIS API endpoint</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-97-august-7-2026" aria-labelledby="release-title-v-4-97-august-7-2026">
+<header class="release-heading"><h2 id="release-title-v-4-97-august-7-2026">V 4.97 August 7, 2026</h2></header>
+<p class="release-note">Hot Fix: VVB’s now have access to all projects when creating validation/verification reports</p>
+<p class="release-note">Hot Fix: “ProjectDeveloper” account type now appears in profile menu for filtering</p>
+</section>
+        <section class="release-card" id="release-v-4-96-august-6-2026" aria-labelledby="release-title-v-4-96-august-6-2026">
+<header class="release-heading"><h2 id="release-title-v-4-96-august-6-2026">V 4.96 August 6, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-96-august-6-2026-review-tool"><h3 id="release-v-4-96-august-6-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Items in the “View Details” page can now be edited by admin, registry coordinator, or secretariat roles</li><li>Correct document count is now seen in the dashboard</li><li>PRR’s can now be filtered by methodology and review type</li><li>Added reviewer feedback form after submission</li><li>NCS and E&amp;I projects have their sectoral scope derived based on the methodology</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-96-august-6-2026-project-submission-tool"><h3 id="release-v-4-96-august-6-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Fixed an issue where the Project Details Crediting Period section (1.10) was not displaying properly when using the custom methodology template</li><li>Project Emissions Labels now correctly appear in generated PDF</li><li>Now all monitoring report parameters correctly show in “Data and Parameters” section after module selection</li><li>Updated PDF number formatting</li><li>Enabled sectoral scope selection for custom methodology</li><li>Updated title for Digital Gateway API documentation page</li><li>New labeling for project documents on registry automation page</li><li>CSV upload option now available for all parameters in VM0051</li><li>Updated methodology templates to include options for REDD and complexity level of project</li><li>Updated text formatting when adding new line to “Title and reference of methodology” section</li><li>Updated project boundary schema for methodologies VM0050, VM0051, and VM0048</li><li>Template is now included in the project reference title when creating new monitoring report</li><li>Updated filters on dashboard</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-96-august-6-2026-digital-forms"><h3 id="release-v-4-96-august-6-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Registry automation uploads for all forms to RAAS now supported</li><li>We now support having the same signee across multiple representator groups for deed signings</li><li>PADA Request users can now withdraw their request before payment is completed</li><li>PADA Request admins can edit requests at any stage</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-96-august-6-2026-miscellaneous"><h3 id="release-v-4-96-august-6-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Proof of contracting documents are now always flagged commercially sensitive</li><li>Implemented new logic to ensure project document commercially sensitive flags are properly enforced from RAAS</li><li>Public comment period links now correctly appear according to the project’s status in Registry</li><li>Project Hub to Registry API updates</li><li>Fixed an issue in which all PCP fields were not resetting after submission</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-96-august-6-2026-ltms"><h3 id="release-v-4-96-august-6-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Updates to LTMS fire alerts</li><li>Biomass comparison updates</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-95-july-31-2026" aria-labelledby="release-title-v-4-95-july-31-2026">
+<header class="release-heading"><h2 id="release-title-v-4-95-july-31-2026">V 4.95 July 31, 2026</h2></header>
+<p class="release-note">Hot fix to allow for representation deed creation for projects owned by account type Project Developer, which is a new RAAS account type</p>
+</section>
+        <section class="release-card" id="release-v-4-94-july-30-2026" aria-labelledby="release-title-v-4-94-july-30-2026">
+<header class="release-heading"><h2 id="release-title-v-4-94-july-30-2026">V 4.94 July 30, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-94-july-30-2026-project-tracker"><h3 id="release-v-4-94-july-30-2026-project-tracker">Project Tracker</h3>
+<ul class="release-points"><li>SLA Calculator now available so we can estimate expected wait times for stakeholders</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-94-july-30-2026-project-submission-tool"><h3 id="release-v-4-94-july-30-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Increased DMRV file upload size limit to 150 MB</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-94-july-30-2026-registry-automation"><h3 id="release-v-4-94-july-30-2026-registry-automation">Registry Automation</h3>
+<ul class="release-points"><li>RAAS UMS updates</li><li>Enable push function from ProjectHub to Registry (vault code change).</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-94-july-30-2026-public-comment"><h3 id="release-v-4-94-july-30-2026-public-comment">Public Comment</h3>
+<ul class="release-points"><li>Enabled PCP feature for all active and inactive statuses</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-94-july-30-2026-ltms"><h3 id="release-v-4-94-july-30-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Paused NGIS scheduled jobs in anticipation of new endpoint</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-93-july-28-2026" aria-labelledby="release-title-v-4-93-july-28-2026">
+<header class="release-heading"><h2 id="release-title-v-4-93-july-28-2026">V 4.93 July 28, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-93-july-28-2026-project-submission-tool"><h3 id="release-v-4-93-july-28-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Updated alignment of some tables in the joint validation verification report template</li><li>Added parameter descriptions to fields in which they were missing for ACM0001</li><li>Newly enhanced registry tab now displays other documents submitted for a project</li><li>Parameter and Calculation engine updates to VM0047 v1.1 and v1.0</li><li>Updated registry tab additions for Scope 3</li><li>Optimized speed of PDF generation</li><li>Crediting period now appears as “vintage periods” when the number of years is rounded up</li><li>Added vintage period table to monitoring reports and joint project description monitoring reports using the custom template</li><li>Updated the API Documentation page containing introductory information, schema, and endpoints for DMRV</li><li>Updated how tables are formatted during PDF generation making them fit the page width better</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-93-july-28-2026-ltms"><h3 id="release-v-4-93-july-28-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Updated notification delivery</li><li>Updated email structure for subscription options. Weekly, bi-weekly, and monthly options are available</li><li>Updated alert email content</li><li>Implemented cronjobs for weekly, bi-weekly, and monthly email notification scheduling</li><li>Updated API’s for PRR integration</li><li>Implemented backup fire alert sources that can be used in the event that NASA FIRMS is down so that there will be no interruptions in data fetching</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-93-july-28-2026-registry-synchronization"><h3 id="release-v-4-93-july-28-2026-registry-synchronization">Registry Synchronization</h3>
+<ul class="release-points"><li>Updates to RAAS API integration</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-93-july-28-2026-review-tool"><h3 id="release-v-4-93-july-28-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Reviewer is able to send to approver even if the technical review has no findings</li><li>We now generate a more descriptive error message when Verra’s response is missing from a PRR and they attempt to submit it to the VVB</li><li>Added a filter to the question bank for checklist managers/admins to make it easier to search</li><li>Checklist managers/admins can now tag a technical review question to a particular methodology</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-93-july-28-2026-miscellaneous"><h3 id="release-v-4-93-july-28-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fix for handling large account numbers in project cache</li><li>Fixed a bug where user application requests were not being forwarded to Hub Support</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-92-july-28-2026" aria-labelledby="release-title-v-4-92-july-28-2026">
+<header class="release-heading"><h2 id="release-title-v-4-92-july-28-2026">V 4.92 July 28, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-92-july-28-2026-review-tool"><h3 id="release-v-4-92-july-28-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Reviewer and approver are able to view and edit their review at all times</li><li>Backend performance updates to PRR</li><li>Fixed an issue on review findings page where “Request Correction” was not properly loading</li><li>Improved PRR logging</li><li>Admin, secretariat, and registry coordinator roles can now edit projects via the “View Details” page</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-92-july-28-2026-registry-synchronization"><h3 id="release-v-4-92-july-28-2026-registry-synchronization">Registry Synchronization</h3>
+<ul class="release-points"><li>Added disclaimer message to the public commenting submission form</li><li>Updates to RAAS API integration</li><li>Updates to UMS RAAS integration</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-91-july-26-2026" aria-labelledby="release-title-v-4-91-july-26-2026">
+<header class="release-heading"><h2 id="release-title-v-4-91-july-26-2026">V 4.91 July 26, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-91-july-26-2026-registry-synchronization"><h3 id="release-v-4-91-july-26-2026-registry-synchronization">Registry Synchronization</h3>
+<ul class="release-points"><li>Release of fully automated registry synchronization services providing two-way synchronization between Project Hub and the new Verra Registry</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-91-july-26-2026-project-submission-tool"><h3 id="release-v-4-91-july-26-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Fixed an issue where the “Add New Row” button was missing in CCB template for tables in sections 4.2.1 and 5.2.1</li><li>Scope 3: VM0043 updates to formatting for better usability</li><li>Updates to VM0049 validation checks</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-91-july-26-2026-review-tool"><h3 id="release-v-4-91-july-26-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Updated alignment in PRR numerical and alphabetical lists</li><li>Fixed an issue where some buttons were not viewable when a reviewer goes to edit a PRR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-91-july-26-2026-miscellaneous"><h3 id="release-v-4-91-july-26-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fixed an issue with the GetAllAccounts API where the account name was not properly populating</li><li>Updated information is now provided when a user submits an application request</li><li>Performance updates to increase page loading speeds</li><li>Added disclaimer notice at the top of the public commenting submission form</li><li>Updated public commenting URL to be public</li><li>Users now receive a confirmation email after submitting an application request</li><li>Introduced RAAS UMS integration</li><li>Added DMRV card to dashboard that links to API schema documentation</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-90-july-21-2026" aria-labelledby="release-title-v-4-90-july-21-2026">
+<header class="release-heading"><h2 id="release-title-v-4-90-july-21-2026">V 4.90 July 21, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-90-july-21-2026-review-tool"><h3 id="release-v-4-90-july-21-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Fixed an issue that caused multiple role buttons to display in the reviewers interface</li><li>Peer reviewer share list is now searchable</li><li>Added new PRR status “Return Recommended” that represents an initiated return so that a request is not officially returned until all documents are completed and approval granted</li><li>VVB and project proponent now receive email notifications when a PRR is either approved or denied</li><li>Added “preferred reviewer” field to expert profile so that experts can be easily identified during reviewer assignment</li><li>Added methodology field and version number to case-level view</li><li>PRR deadline exemption request less than or equal to 90 days now automatically generate SuiteCRM cases which will be auto approved and closed</li><li>Optimized speed when reviewer is adding new findings to a PRR</li><li>Fixed an issue where the request correction page becomes unresponsive after findings are sent in registry review</li><li>Aligned review tool and SuiteCRM case statuses</li><li>Date of Issue can now be confirmed before approving a PRR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-90-july-21-2026-ltms"><h3 id="release-v-4-90-july-21-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Updated filtering options</li><li>Project area calculation is now performed using PostGIS geodesic area logic which more accurately reflect the true earth-surface aera of KML project boundaries</li><li>Updated column spacing in dashboard view</li><li>Enhanced logged</li><li>Temporarily disable fire alerts due to NASA VIIRS S-NPP data outage</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-90-july-21-2026-miscellaneous"><h3 id="release-v-4-90-july-21-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Security updates to reduce risk of credential exposure</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-89-july-9-2026" aria-labelledby="release-title-v-4-89-july-9-2026">
+<header class="release-heading"><h2 id="release-title-v-4-89-july-9-2026">V 4.89 July 9, 2026</h2></header>
+<p class="release-note">SuiteCRM Case statuses are incorrectly modified by Digital Review Tool.</p>
+</section>
+        <section class="release-card" id="release-v-4-88-july-7-2026" aria-labelledby="release-title-v-4-88-july-7-2026">
+<header class="release-heading"><h2 id="release-title-v-4-88-july-7-2026">V 4.88 July 7, 2026</h2></header>
+<p class="release-note">Sync all files from the APX File Share to Verra’s internal Blob Storage independent of file metadata, so that Verra has a reliable internal copy of APX files for downstream use.</p>
+</section>
+        <section class="release-card" id="release-v-4-87-july-1-2026" aria-labelledby="release-title-v-4-87-july-1-2026">
+<header class="release-heading"><h2 id="release-title-v-4-87-july-1-2026">V 4.87 July 1, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-87-july-1-2026-review-tool"><h3 id="release-v-4-87-july-1-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Added methodology field and review conclusion fields to PDF download of PRR</li><li>Changed “Submit to VVB” button to “Submit to Project Proponent” in Request Correction module</li><li>When reviewer selects “Self approve” button in a request correction, the page now re-directs to the correction request as opposed to the PRR</li><li>When overriding to pre-check review stage document status now changes to under review</li><li>Reviewer and approver assignments are now synced in Suite CRM</li><li>Fixed alignment issues with some text in the PDF download</li><li>In request correction VVB requirements/rules section, program/source documents of type “ISO” can now be removed if not needed</li><li>Fixed an issue with one PRR where findings were closed but the PRR was not marked as Approved</li><li>Removed leading zeroes from 3-digit Project ID’s</li><li>Review type filter now displays all available review type options regardless of current project assignment</li><li>VVB’s can now request deadline exemptions from their PRR dashboard</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-87-july-1-2026-project-submission-tool"><h3 id="release-v-4-87-july-1-2026-project-submission-tool">Project Submission Tool</h3>
+<ul class="release-points"><li>Registry automation auto selects “I am Proponent” when project document is submitted where the account owner is also the project proponent</li><li>Fixed crediting year mismatch error with ACM0003 validation</li><li>VM0049 equation 3 now requires users to input raw %CO2mass values</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-87-july-1-2026-afolu-nprt"><h3 id="release-v-4-87-july-1-2026-afolu-nprt">AFOLU NPRT</h3>
+<ul class="release-points"><li>Political Risk/Governance scores api’s updated to retrieve Worldwide Governance Indicators (WGI) data through 2024</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-87-july-1-2026-miscellaneous"><h3 id="release-v-4-87-july-1-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Updated the adoption metrics queries are ran to be more accurate</li><li>Removed account number from organization name in GetAllAccounts API repsonse so the end user only sees the organization name instead of the organization name + account number</li><li>Added dedicated support page to Project Hub for better visibility of help resources</li><li>Added floating help icon for better visibility to users</li><li>Added user guide for PADA Request and FAQ for PRR</li><li>Mapped backend data document type “Other document” to APX registry type “Other”, also synced document status types “Rejected”, “Submitted”, and “Approved”</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-87-july-1-2026-ltms"><h3 id="release-v-4-87-july-1-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Enhanced LTMS automation by allowing Python scripts</li><li>Improved timeliness of LTMS Alerts</li><li>Resolved issue where some projects were not appearing in LTMS</li><li>Implemented a “Select all Projects” option for subscriptions</li><li>Users can now create multiple alert selections, each with different configurations</li><li>Enhanced LCC batch processing to handle edge case scenarios</li><li>Enhanced deforestation, LCC, and burned area scripts</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-87-july-1-2026-pada-dashboard"><h3 id="release-v-4-87-july-1-2026-pada-dashboard">PADA Dashboard</h3>
+<ul class="release-points"><li>Removed Jurisdiction Name field from new submission form</li><li>Removed restrictions from risk mapper performance metrics to allow any positive floating value</li><li>Updated checklist logic to now include a “Needs Improvement” checklist category and the ability to mark findings as “Major Findings”</li><li>Updated request correction UI to now auto populate any items that need to be addressed in the feedback reply screen</li><li>We now allow for directory-based uploads for larger data sets</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-87-july-1-2026-pdf-extraction"><h3 id="release-v-4-87-july-1-2026-pdf-extraction">PDF Extraction</h3>
+<ul class="release-points"><li>Upstage data extracted to Project Hub</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-86-june23-2026" aria-labelledby="release-title-v-4-86-june23-2026">
+<header class="release-heading"><h2 id="release-title-v-4-86-june23-2026">V 4.86 June23, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-86-june23-2026-review-tool"><h3 id="release-v-4-86-june23-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Hot fix for sync issue, documents were not rendered during review.</li><li>Hot fix to Remove Automatic Case Inactivation Logic, cases should stay active during review.</li><li>Hot fix for removing leading zeros in the project id from SuiteCRM response when matching the project id with backend data.</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-85-june17-2026" aria-labelledby="release-title-v-4-85-june17-2026">
+<header class="release-heading"><h2 id="release-title-v-4-85-june17-2026">V 4.85 June17, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-85-june17-2026-pada-request"><h3 id="release-v-4-85-june17-2026-pada-request">PADA Request</h3>
+<ul class="release-points"><li>Hot fix to allow ‘Admins’ update KML files for PADA Requests</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-85-june17-2026-miscellaneous"><h3 id="release-v-4-85-june17-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Improved logging and persistence in SnowflakeFileSync</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-84-june-02-2026" aria-labelledby="release-title-v-4-84-june-02-2026">
+<header class="release-heading"><h2 id="release-title-v-4-84-june-02-2026">V 4.84 June 02, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-84-june-02-2026-digital-project-submission"><h3 id="release-v-4-84-june-02-2026-digital-project-submission">Digital Project Submission</h3>
+<ul class="release-points"><li>Resolved issue where file attachment popup was not properly loading attachments within the Sustainable Development Contributions (Section 2.1.12) of Monitoring Reports</li><li>Source of Data field is now mandatory for VM0008</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-84-june-02-2026-pada-request"><h3 id="release-v-4-84-june-02-2026-pada-request">PADA Request</h3>
+<ul class="release-points"><li>Administrators can now reject a request and provide reasoning to requestor. The requestor can also update and re-submit requests based on reasoning provided.</li><li>Requestor can now update KML if need be, before payment is confirmed</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-84-june-02-2026-review-tool"><h3 id="release-v-4-84-june-02-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Performance enhancement</li><li>Updated button on “Correction Request” screen to read “Submit to Project Proponent” as opposed to “Submit to VVB”</li><li>When a new finding is added, any previous findings added will automatically collapse, allowing the reviewer to only focus on the newly added finding.</li><li>Project Proponent dropdown list is now labeled with Registry or Entity indicating what list the entry is from</li><li>Reviewer now has “Not Applicable” item that can be marked as needed when reviewing a checklist</li><li>For reviewers, Program Rules are now split into two sections for better clarity: Project Related (Program) Rules and VVB Requirements</li><li>Findings can now be classified by 1 of 8 typologies via newly created “Issue Type” field</li><li>Issue and Action Required sections are now auto-populated based on the selected Issue Type</li><li>All typologies now display document name before section number in both “Issue” and “Action Required” subsections</li><li>Reviewers can now add new findings that are not associated with one of the eight typologies</li><li>The “Action Required” section in Typology 5 now auto populates document and section fields from the “Issue” subsection</li><li>Typology information updates</li><li>It’s now easier to configure typology section as the document is now auto selected so the user doesn’t have to select it again</li><li>Cancel button added to “Review Findings” page that brings the user back to the previous page</li><li>Fixed an issue where the auto populated document name and section number under “action items” was not properly saving</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-84-june-02-2026-ltms"><h3 id="release-v-4-84-june-02-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Weekly NGIS alerts for deforestation, burned area, and fire alerts</li><li>Python script automation support added</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-84-june-02-2026-project-tracker"><h3 id="release-v-4-84-june-02-2026-project-tracker">Project Tracker</h3>
+<ul class="release-points"><li>Updated Completeness Check definition in Glossary</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-84-june-02-2026-plrt"><h3 id="release-v-4-84-june-02-2026-plrt">PLRT</h3>
+<ul class="release-points"><li>Fixed issue for a project missing the most recent approved KML file</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-84-june-02-2026-miscellaneous"><h3 id="release-v-4-84-june-02-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Both Registry team and commenter now receive email notifications upon public comments being submitted for projects</li><li>Admins can now export public comment period records in PDF format</li><li>Updated formatting for a public commenter pasting comments into the comment field making this more user friendly.</li><li>Installed HotJar tracking tag so that we can leverage HotJar to better track users&#x27; journeys in the Project Hub</li><li>Resolved issue where contents were not rendering properly when filter pane was expanded when searching for projects</li><li>Improved logging and persistence in SnowflakeFileSync</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-83-may-20-2026" aria-labelledby="release-title-v-4-83-may-20-2026">
+<header class="release-heading"><h2 id="release-title-v-4-83-may-20-2026">V 4.83 May 20, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-83-may-20-2026-digital-submission"><h3 id="release-v-4-83-may-20-2026-digital-submission">Digital Submission</h3>
+<ul class="release-points"><li>Updated color on maintenance notice message</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-82-may-13-2026" aria-labelledby="release-title-v-4-82-may-13-2026">
+<header class="release-heading"><h2 id="release-title-v-4-82-may-13-2026">V 4.82 May 13, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-82-may-13-2026-digital-forms"><h3 id="release-v-4-82-may-13-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Fixed an issue in which user received error message when attempting to sign representation deeds</li><li>Added functionality to Communications Agreement so that a form can be marked as being signed by a single signee</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-82-may-13-2026-digital-submission"><h3 id="release-v-4-82-may-13-2026-digital-submission">Digital Submission</h3>
+<ul class="release-points"><li>Uploading tiff files is now enabled for Nature Framework methodology</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-82-may-13-2026-prr"><h3 id="release-v-4-82-may-13-2026-prr">PRR</h3>
+<ul class="release-points"><li>The PRR dashboard can now be filtered by VVB or Project Proponent name</li><li>Admin or Portfolio Manager users can now update the Reviewer and Approver listed on a PRR</li><li>PRR Reviewers can now send a PRR to an approver when all findings have been closed</li><li>Fixed VVB Contact label in PRR</li><li>In the “Return Request” workflow, part B is now optional in the return request template</li><li>Resolved issue in which VVB could not submit responses due to large payload size of PRR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-82-may-13-2026-project-tracker"><h3 id="release-v-4-82-may-13-2026-project-tracker">Project Tracker</h3>
+<ul class="release-points"><li>Enhanced notes visibility and updated glossary entry for completeness check</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-82-may-13-2026-review-tool"><h3 id="release-v-4-82-may-13-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Resolved issue in which the question bank was not searchable from the checklist module</li><li>Checkpoint questions can now be marked as “Not Applicable” during a review</li><li>SCRM cases are automatically updated with statuses when updated in Review Tool</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-82-may-13-2026-miscellaneous"><h3 id="release-v-4-82-may-13-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Backend Data users can now filter projects list by “Crediting Period Expired”</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-81-may-7-2026" aria-labelledby="release-title-v-4-81-may-7-2026">
+<header class="release-heading"><h2 id="release-title-v-4-81-may-7-2026">V 4.81 May 7, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-81-may-7-2026-miscellaneous"><h3 id="release-v-4-81-may-7-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fixed spillover text in some NPRT Reports</li><li>LTMS Dashboard now directly fetches KML file from Project Database eliminating the need of manual upload of kml files</li><li>Improved “Project Status” rendering on public comment page</li><li>Resolved search errors that failed to return questions and now display correct error messages.</li><li>Enhanced visibility into the Peer Review Request (PRR) lifecycle by providing additional details when a PRR is sent to an Approver. This improves transparency and traceability for all roles involved in the review process.</li><li>Updated weekly adoption metric report</li><li>Access requests now include more context (user, account, and application details) and can be reviewed/approved by the right admins, speeding up approvals and reducing back-and-forth</li><li>Added an “Accreditation Body” read-only role so accreditation bodies can view NOVS submissions from the VVBs they accredit, making it easier to review and assess submissions</li><li>PRR response notifications now CC the Project Proponent, keeping everyone aligned and reducing follow-up emails</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-80-may-5-2026" aria-labelledby="release-title-v-4-80-may-5-2026">
+<header class="release-heading"><h2 id="release-title-v-4-80-may-5-2026">V 4.80 May 5, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-80-may-5-2026-user-management-system"><h3 id="release-v-4-80-may-5-2026-user-management-system">User Management System</h3>
+<ul class="release-points"><li>Account Managers can now view and update user roles in the User Management System (UMS) for their accounts, making it faster and easier to keep the right people assigned to the right permissions</li><li>Fixed an issue that prevented users with multiple accounts from switching accounts once logged in</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-80-may-5-2026-digital-forms"><h3 id="release-v-4-80-may-5-2026-digital-forms">Digital Forms</h3>
+<ul class="release-points"><li>Fixed an issue where users were unable to select their project from the project list when creating a form</li><li>Fixed an issue that prevented NOVS forms creation</li><li>Representation Deed submitted dates now reflect the date the deed was either submitted to registry or submitted for approval (on deeds that require Verra signature)</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-80-may-5-2026-digital-submission"><h3 id="release-v-4-80-may-5-2026-digital-submission">Digital Submission</h3>
+<ul class="release-points"><li>User can enable/disable track-change options while creating PD/MR/Validation Report or Verification Report. This will make things easier for users and systems efficient specially during early stage of development</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-80-may-5-2026-prr"><h3 id="release-v-4-80-may-5-2026-prr">PRR</h3>
+<ul class="release-points"><li>System Triggers Email to VVB, CC to PP on the day count 75 of PRR when it is Pending – VVB</li><li>Date of Issue is now required to be confirmed upon PRR approval</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-79-may-1-2026-hotfix" aria-labelledby="release-title-v-4-79-may-1-2026-hotfix">
+<header class="release-heading"><h2 id="release-title-v-4-79-may-1-2026-hotfix">V 4.79 May 1, 2026 (Hotfix)</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-79-may-1-2026-hotfix-digital-submission"><h3 id="release-v-4-79-may-1-2026-hotfix-digital-submission">Digital Submission</h3>
+<ul class="release-points"><li>VM 0047 related workload is experiencing out of memory exception due to large file size. Queries were optimized to resolve the issue.</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-78-april-30-2026" aria-labelledby="release-title-v-4-78-april-30-2026">
+<header class="release-heading"><h2 id="release-title-v-4-78-april-30-2026">V 4.78 April 30, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-78-april-30-2026-exemption-request"><h3 id="release-v-4-78-april-30-2026-exemption-request">Exemption Request</h3>
+<ul class="release-points"><li>Exemption request now has an informative dashboard and enhanced the existing template for improved usability</li><li>Request Edit functionality will provide an opportunity for admins to send a request to users with comments on what needs to be updated in the submitted form. Submitted forms will be automatically uploaded to the registry. These would reduce the manual work</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-78-april-30-2026-afolu"><h3 id="release-v-4-78-april-30-2026-afolu">AFOLU</h3>
+<ul class="release-points"><li>Resolved an issue that caused saving inconsistencies for fields with more than 10 attachments</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-78-april-30-2026-prr"><h3 id="release-v-4-78-april-30-2026-prr">PRR</h3>
+<ul class="release-points"><li>PRR’s can now be shared for peer review in any round, even after the VVB has responded. Both reviewer and approver can see the peer review status of the PRR. In addition, reviewers now send a reminder to VVB directly from the project hub at any time.</li><li>Resolved an issue in where PRR report name changes were not being saved</li><li>The project proponents name now appears on the PDF download of approved PRR’s and upon re-opening a finding that had responses, the previous responses are now available</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-77-april-29-2026" aria-labelledby="release-title-v-4-77-april-29-2026">
+<header class="release-heading"><h2 id="release-title-v-4-77-april-29-2026">V 4.77 April 29, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-77-april-29-2026-novs"><h3 id="release-v-4-77-april-29-2026-novs">NOVS</h3>
+<ul class="release-points"><li>NOVS now highlights submissions from highrisk countries directly in the list view, enabling reviewers to quickly identify and prioritize cases requiring closer or urgent followup. The indicator is automatically applied based on Verra’s internal highrisk country list, visible only to Verra users, and does not affect VVB inputs or form data. Highlights persist as long as a country remains classified as high risk. Currently flagged countries: Uganda, Colombia, Peru, Chile, Paraguay, Mexico, Indonesia, Lao PDR, Pakistan, Papua New Guinea, Malaysia, and Nepal.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-77-april-29-2026-dpm"><h3 id="release-v-4-77-april-29-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Fixed an issue while updating multiple project locations using the CSV import option where the “Area” column in the location table is displayed as blank after upload. The CSV template should now include a column to capture the area values which minimizes ambiguity and increase quality and efficiency</li><li>Implemented the ability to patch records via our Api’s so that we don’t have to send the entire data set to do partial updates which makes application programming easier and efficient</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-77-april-29-2026-ltms"><h3 id="release-v-4-77-april-29-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Integrated NGIS Land Cover API Data into LTMS to fetch, process and display land cover alert data with ongoing verification and fixes.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-77-april-29-2026-public-comments"><h3 id="release-v-4-77-april-29-2026-public-comments">Public Comments</h3>
+<ul class="release-points"><li>Updated the public comment detail page header to match Project Hub. This will provide a more consistent look and feel.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-77-april-29-2026-miscellaneous"><h3 id="release-v-4-77-april-29-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Improved the reliability and availability of account proponent information across Project Hub</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-76-april-23-2026" aria-labelledby="release-title-v-4-76-april-23-2026">
+<header class="release-heading"><h2 id="release-title-v-4-76-april-23-2026">V 4.76 April 23, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-76-april-23-2026-dpm"><h3 id="release-v-4-76-april-23-2026-dpm">DPM</h3>
+<ul class="release-points"><li>General across all methodologies: We’ve excluded tools and modules that do not have calculation inputs on the calculation engine JSON generation. This fix improves the calculation engine efficiency.</li><li>General across all methodologies: Users who do not use project hub calculation engine and opt to use the manual ERR calculations, when PDF report is generated for such records, the ERR table is now appended in the output document.</li><li>VM0044: The parameters PEDE,p,y; PEDF,p,y and PECE,p,y; PECF,p,y are in the list of monitored parameters. These parameters are included in section 5.2 in the PDD and section 6.2 in the Joint PDMR and relevant sections (Data and Parameters Monitored) in other reports for version 1.1 and 1.2 of VM0044 and will now be visible on the pdf generated from the project hub.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-76-april-23-2026-reviews"><h3 id="release-v-4-76-april-23-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>We’ve resolved some issues after a recent framework upgrade to stabilize and optimize Project Hub. This fix is related to issues reported on deeds, projects and project tracker.</li><li>PRR creation now prepopulates VVB contact details directly from SuiteCRM, automatically listing main contacts and improving accuracy and speed when adding VVB recipients. This reduces manual entry, ensures trusted contact data is used, and makes VVB coordination clearer through a dedicated “Add VVB contact” action.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-76-april-23-2026-project-location-review-tool-plrt"><h3 id="release-v-4-76-april-23-2026-project-location-review-tool-plrt">Project Location Review Tool (PLRT)</h3>
+<ul class="release-points"><li>We’ve enhanced marker and project selection behavior in PLRT to deliver a more reliable and intuitive map experience. Clicking a marker or project ID now consistently highlights the project area and automatically zooms the map to fit the selected boundary, regardless of project size. This provides clearer spatial context, reduces confusion when navigating between projects, and ensures users can quickly focus on the correct project area without manual map adjustments.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-76-april-23-2026-miscellaneous"><h3 id="release-v-4-76-april-23-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fixed an issue in VRAF submission where objectives triggered a false validation error despite valid data being entered. The underlying validation already existed, but incorrect field mapping caused the system to fail to recognize the objective value. By correcting the mapping to the objective property, the system now accurately captures entered data, eliminating unnecessary validation errors and ensuring smoother VRAF submissions.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-76-april-23-2026-public-consultation"><h3 id="release-v-4-76-april-23-2026-public-consultation">Public consultation</h3>
+<ul class="release-points"><li>We have added the ability to distinguish anonymous commenters in public consultations, improving transparency and moderation while ensuring commenters remain fully anonymous..</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-76-april-23-2026-public-comment-feature"><h3 id="release-v-4-76-april-23-2026-public-comment-feature">Public Comment Feature</h3>
+<ul class="release-points"><li>We’ve added more columns and improved filtering in the List View, enhanced the overall UI for a cleaner and more intuitive experience, and introduced an anonymous commenting feature to enable more flexible user feedback.</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-75-april-16-2026" aria-labelledby="release-title-v-4-75-april-16-2026">
+<header class="release-heading"><h2 id="release-title-v-4-75-april-16-2026">V 4.75 April 16, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-75-april-16-2026-dpm"><h3 id="release-v-4-75-april-16-2026-dpm">DPM</h3>
+<ul class="release-points"><li>We’ve added a new review pane that lets you easily view all supporting documents in one place—without worrying about accidentally making changes. This feature ensures a smooth, secure review process and saves you time by keeping everything organized and accessible.</li><li>Improved reliability of registry automation by preventing repeated retries on failed jobs and reducing unnecessary failure notifications to the support team.</li><li>Enhanced DMRV submission capabilities by enabling projects to submit multiple files along with a consolidated project description in single step which result into efficiency and avoid confusions.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-75-april-16-2026-requantification"><h3 id="release-v-4-75-april-16-2026-requantification">Requantification</h3>
+<ul class="release-points"><li>Enabled automatic email notifications to the Registry when requantification forms are updated, ensuring timely visibility, reducing manual followups, and improving coordination and turnaround during the requantification process</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-75-april-16-2026-reviews"><h3 id="release-v-4-75-april-16-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Enhanced PRR review workflows by allowing multiple case numbers to be associated with a single PRR, ensuring alignment between VCS and CCB programs, maintaining consistent status tracking, and keeping all reviewers informed of PRR returns and updates across both programs.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-75-april-16-2026-miscellaneous"><h3 id="release-v-4-75-april-16-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Strengthened notification governance by limiting Project Hub role/user/access update emails to User Management Service (UMS) admins, eliminating unintended emails to nonUMS admins and improving clarity, accountability, and signaltonoise across the platform.</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-74-april-13-2026" aria-labelledby="release-title-v-4-74-april-13-2026">
+<header class="release-heading"><h2 id="release-title-v-4-74-april-13-2026">V 4.74 April 13, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-74-april-13-2026-ltms"><h3 id="release-v-4-74-april-13-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Enhance NGIS Data Processing to Support Deforestation, Fire Alerts and Burned Area with Dynamic Parameter Handling</li><li>AFOLU Activities included in LTMS Project api responses</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-74-april-13-2026-pada"><h3 id="release-v-4-74-april-13-2026-pada">PADA</h3>
+<ul class="release-points"><li>End-toEnd PADA updates across ui and backend to enhance review flow, checklist and file upload</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-74-april-13-2026-novs"><h3 id="release-v-4-74-april-13-2026-novs">NOVS</h3>
+<ul class="release-points"><li>Enhance Public Consultation Feedback Form with page number support and validation</li><li>Use split query for feedback summary PDF/CSV exports to prevent timeouts on large data sets</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-74-april-13-2026-reviews"><h3 id="release-v-4-74-april-13-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Refactor Denial Letter to return recommendation workflow</li><li>Adjusted REOPENED findings handling and lock icon logic for VVB/PP users in PRR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-74-april-13-2026-miscellaneous"><h3 id="release-v-4-74-april-13-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Upgrade Angular Version to Latest (v21)</li><li>Add PLRT enhancement for updating marker legend and zooming feature</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-73-april-7-2026" aria-labelledby="release-title-v-4-73-april-7-2026">
+<header class="release-heading"><h2 id="release-title-v-4-73-april-7-2026">V 4.73 April 7, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-73-april-7-2026-vcs"><h3 id="release-v-4-73-april-7-2026-vcs">VCS</h3>
+<ul class="release-points"><li>VCS hotfix for missing approvers signatures in Production</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-73-april-7-2026-pada-dashboard"><h3 id="release-v-4-73-april-7-2026-pada-dashboard">PADA Dashboard</h3>
+<ul class="release-points"><li>VCS hotfix for missing approvers signatures in Production</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-72-april-6-2026" aria-labelledby="release-title-v-4-72-april-6-2026">
+<header class="release-heading"><h2 id="release-title-v-4-72-april-6-2026">V 4.72 April 6, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-72-april-6-2026-dpm"><h3 id="release-v-4-72-april-6-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Various production feedback improvements in PD and MR</li><li>Added audit log to track and view modifications made to methodology management</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-72-april-6-2026-ltms"><h3 id="release-v-4-72-april-6-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Added AFLUE individual project summary feature</li><li>Updated and optimized cron job configuration for NGIS data triggering</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-72-april-6-2026-novs"><h3 id="release-v-4-72-april-6-2026-novs">NOVS</h3>
+<ul class="release-points"><li>PADA enhancements with advanced filters, export updates, editable invoice amount, role-based refinements and jurisdiction support</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-72-april-6-2026-novs-2"><h3 id="release-v-4-72-april-6-2026-novs-2">NOVS</h3>
+<ul class="release-points"><li>Fixed an issue with intermittent timeouts on comments</li><li>Fixed an issue in approver signature deed approval flow</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-72-april-6-2026-reviews"><h3 id="release-v-4-72-april-6-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Added admin toggle for internal items and expanded and fixed request type enums</li><li>Renamed Begin Denial Checklist Review to Begin Pre-Check Review</li><li>Enabled 4th round submission, refined validation and adjusted button states</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-72-april-6-2026-miscellaneous"><h3 id="release-v-4-72-april-6-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Added cache invalidation for user profile accounts</li><li>Fixed issue with CADT synchronization</li><li>Added registry automation workflow to GCS service</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-71-march-31-2026" aria-labelledby="release-title-v-4-71-march-31-2026">
+<header class="release-heading"><h2 id="release-title-v-4-71-march-31-2026">V 4.71 March 31, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-71-march-31-2026-afolu-and-gcs-nprt"><h3 id="release-v-4-71-march-31-2026-afolu-and-gcs-nprt">AFOLU and GCS NPRT</h3>
+<ul class="release-points"><li>Ensures AFOLU and GCS NPRT tools display only relevant projects based on the user’s account</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-71-march-31-2026-vcs-reps"><h3 id="release-v-4-71-march-31-2026-vcs-reps">VCS Reps</h3>
+<ul class="release-points"><li>Fixed an issue with VCS Reps Signature Automation and updated the email notification</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-71-march-31-2026-reviews"><h3 id="release-v-4-71-march-31-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Updated findings visibility and indicators for VVB and PP users in PRR</li><li>Initialized field type default, correct request-correction routes and remove round condition for PRR</li><li>Stop checklist templates from carrying over in Project Review Tool</li><li>Add feature to reset selected date in PRR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-71-march-31-2026-ltms"><h3 id="release-v-4-71-march-31-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Individual project summary feature update</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-71-march-31-2026-miscellaneous"><h3 id="release-v-4-71-march-31-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Enhanced notification templates with additional fields and CSV export improvements</li><li>Fixed an issue with create actions for NOVS</li><li>Project Tracker VVB account support for case filtering and access validation</li><li>OTP retrieval logic to respect deed approval status and ensure correct verification flow</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-70-march-26-2026" aria-labelledby="release-title-v-4-70-march-26-2026">
+<header class="release-heading"><h2 id="release-title-v-4-70-march-26-2026">V 4.70 March 26, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-70-march-26-2026-dpm"><h3 id="release-v-4-70-march-26-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Fixed an issue with registry automation showing pending for records in production</li><li>Updated CORS origins for MGS migration</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-70-march-26-2026-ltms"><h3 id="release-v-4-70-march-26-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Fixed an issue with KML Area data and burned/deforested percentage</li><li>Enhanced processing with request driven modes</li><li>Updated configuration for new Google Service Account</li><li>Added sort functionality for homepage data table</li><li>NGIS Land Cover export CSV into structured dataset</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-70-march-26-2026-miscellaneous"><h3 id="release-v-4-70-march-26-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Enforced expiration on all cache rewrites for accounts</li><li>Added admin read-only view support for multiple tools</li><li>Changed project summary card to green</li><li>Added automated adoption metrics report job</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-70-march-26-2026-reviews"><h3 id="release-v-4-70-march-26-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Fixed an issue to prevent duplicate checklists, improve request type filtering and resolve stale cache updates in PRR</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-69-march-19-2026" aria-labelledby="release-title-v-4-69-march-19-2026">
+<header class="release-heading"><h2 id="release-title-v-4-69-march-19-2026">V 4.69 March 19, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-69-march-19-2026-dpm"><h3 id="release-v-4-69-march-19-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Updated DPM url and methodology lookup based on approved date and fixed an issue with whole number processing</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-69-march-19-2026-ltms"><h3 id="release-v-4-69-march-19-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Sync blob data to database and added deforestation tiles path and logging</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-69-march-19-2026-reviews"><h3 id="release-v-4-69-march-19-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>fix stale editor content and comment counts after finding deletion</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-69-march-19-2026-issuances"><h3 id="release-v-4-69-march-19-2026-issuances">Issuances</h3>
+<ul class="release-points"><li>Added LTMS AFOLU projects integration with project status, crediting period start/end dates and ERR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-69-march-19-2026-novs"><h3 id="release-v-4-69-march-19-2026-novs">NOVS</h3>
+<ul class="release-points"><li>Updated approval reminder to send only for partial reps</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-69-march-19-2026-miscellaneous"><h3 id="release-v-4-69-march-19-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fixed sorting issue caused by loading reset and improve sorting for submission number for PADA dashboard</li><li>Updated “Denied” to “Request Returned” in cases decisions</li><li>Expanded CCP with Base Entity and updated Form to return Created By, Added Paginated response, Added filtering</li><li>Refactor reset execution popup message for VCS Phase II</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-68-march-16-2026" aria-labelledby="release-title-v-4-68-march-16-2026">
+<header class="release-heading"><h2 id="release-title-v-4-68-march-16-2026">V 4.68 March 16, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-68-march-16-2026-novs"><h3 id="release-v-4-68-march-16-2026-novs">NOVS</h3>
+<ul class="release-points"><li>List view enhancements</li><li>Display estimated ERR</li><li>Add Filter Panel to NOVS Form for Export</li><li>Remove Columns from NOVS Excel Extract</li><li>Open “View” Link in New Tab</li><li>Novs Filter not working as expected</li><li>Updated sections 2.2-2.9 in Comms Agreement</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-68-march-16-2026-reviews"><h3 id="release-v-4-68-march-16-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Added support for very high complexity level and refactored existing complexity levels to enhance methodology options filtering and sorting</li><li>Synced review rounds with real time updates and fixed an issue with REOPENED status in finding response validation for PRR</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-68-march-16-2026-dpm"><h3 id="release-v-4-68-march-16-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Fixed issue with registry submission failing for scope 3 project 615</li><li>Fixed an issue with project location instance in Nature Framework</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-68-march-16-2026-ltms"><h3 id="release-v-4-68-march-16-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Updated features for home page data tables</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-68-march-16-2026-miscellaneous"><h3 id="release-v-4-68-march-16-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Implement viewing related data on project page for account users</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-67-march-15-2026" aria-labelledby="release-title-v-4-67-march-15-2026">
+<header class="release-heading"><h2 id="release-title-v-4-67-march-15-2026">V 4.67 March 15, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-67-march-15-2026-reviews"><h3 id="release-v-4-67-march-15-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>PRR Module Improvements: Centralized Button State, Optimized Caching, Bug Fixes &amp; Streamlined APIs for SRP Compliance</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-67-march-15-2026-miscellaneous"><h3 id="release-v-4-67-march-15-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Updated account proponent source and updated contact for address id in patched records</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-67-march-15-2026-dpm"><h3 id="release-v-4-67-march-15-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Added upload arrows throughout section 3.3 for AMS-III-BM-Monitoring Tab</li><li>Added Nature Framework Capture Button</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-66-march-11-2026" aria-labelledby="release-title-v-4-66-march-11-2026">
+<header class="release-heading"><h2 id="release-title-v-4-66-march-11-2026">V 4.66 March 11, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-66-march-11-2026-dpm"><h3 id="release-v-4-66-march-11-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Adjust table column widths in Nature Framework PDF Enhancements</li><li>Added option to exclude files from PDF based on privacy flag</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-66-march-11-2026-document-extraction"><h3 id="release-v-4-66-march-11-2026-document-extraction">Document Extraction</h3>
+<ul class="release-points"><li>Fixed issue with missing methodology and versions</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-66-march-11-2026-miscellaneous"><h3 id="release-v-4-66-march-11-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Added project details retrieval for VCS representation</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-65-march-5-2026" aria-labelledby="release-title-v-4-65-march-5-2026">
+<header class="release-heading"><h2 id="release-title-v-4-65-march-5-2026">V 4.65 March 5, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-65-march-5-2026-novs"><h3 id="release-v-4-65-march-5-2026-novs">NOVS</h3>
+<ul class="release-points"><li>Audit language to NOVS for NOVS form</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-65-march-5-2026-dpm"><h3 id="release-v-4-65-march-5-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Email notifications triggered to hub support when registry automation fails</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-64-march-3-2026" aria-labelledby="release-title-v-4-64-march-3-2026">
+<header class="release-heading"><h2 id="release-title-v-4-64-march-3-2026">V 4.64 March 3, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-64-march-3-2026-project-tracker"><h3 id="release-v-4-64-march-3-2026-project-tracker">Project Tracker</h3>
+<ul class="release-points"><li>We can now display and filter projects that have been digitally submitted</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-64-march-3-2026-miscellaneous"><h3 id="release-v-4-64-march-3-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Clean methodology version in paragraph citations for Document Extraction</li><li>Update VCS process id after ProcessMaker Update</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-64-march-3-2026-reviews"><h3 id="release-v-4-64-march-3-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Support multiple program clauses per checklist question</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-64-march-3-2026-dpm"><h3 id="release-v-4-64-march-3-2026-dpm">DPM</h3>
+<ul class="release-points"><li>VM0051 Hot Fix</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-63-february-26-2026" aria-labelledby="release-title-v-4-63-february-26-2026">
+<header class="release-heading"><h2 id="release-title-v-4-63-february-26-2026">V 4.63 February 26, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-63-february-26-2026-dpm"><h3 id="release-v-4-63-february-26-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Calculation engine for VM0047 now completes even when final crediting year data is not present</li><li>Calculation engine fix resolving long loading times for VM0049</li><li>Calculation engine fix for column name mismatches in VM0049</li><li>Added filter options for DMRV API Get Requests</li><li>Fixed bug where Get API yielded validation error</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-63-february-26-2026-vcs-representations"><h3 id="release-v-4-63-february-26-2026-vcs-representations">VCS Representations</h3>
+<ul class="release-points"><li>VCS Representation Phase II- Signature Automation without comment feature</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-63-february-26-2026-prr"><h3 id="release-v-4-63-february-26-2026-prr">PRR</h3>
+<ul class="release-points"><li>Added findings summary badges to PRR edit and view pages</li><li>Secretariat no longer receives email notification upon VVB submission</li><li>Fixed issue that prevented VVB from deleting uploads in round 2</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-63-february-26-2026-ltms"><h3 id="release-v-4-63-february-26-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Performance improvements</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-63-february-26-2026-review-tool"><h3 id="release-v-4-63-february-26-2026-review-tool">Review Tool</h3>
+<ul class="release-points"><li>Removed account role association during assignment of project review</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-62-february-19-2026" aria-labelledby="release-title-v-4-62-february-19-2026">
+<header class="release-heading"><h2 id="release-title-v-4-62-february-19-2026">V 4.62 February 19, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-62-february-19-2026-dpm"><h3 id="release-v-4-62-february-19-2026-dpm">DPM</h3>
+<ul class="release-points"><li>VCS CCB v4.4 v3.0 header-changes to fix logo issue</li><li>Hotfix for VM0047 and VM0051</li><li>Trigger email notification to hub support when a registry automation fails</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-62-february-19-2026-ltms"><h3 id="release-v-4-62-february-19-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Update storage folder path for Land Cover Area</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-62-february-19-2026-reviews"><h3 id="release-v-4-62-february-19-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Remove VVB Document from round response and add SuiteCRM sync status case handling</li><li>Simplify and update confirmation and success messages</li><li>Enhance technical checklist filtering by category, complexity and risk level and improve review navigation</li><li>Enhancement: Improve Account-Proponent Mapping and Exclude Inactive Notification Templates.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-62-february-19-2026-miscellaneous"><h3 id="release-v-4-62-february-19-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Improved account proponent mapping and exclude inactive notification templates</li><li>Trigger email to project hub support when registry automation fails</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-61-february-13-2026" aria-labelledby="release-title-v-4-61-february-13-2026">
+<header class="release-heading"><h2 id="release-title-v-4-61-february-13-2026">V 4.61 February 13, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-61-february-13-2026-dpm"><h3 id="release-v-4-61-february-13-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Hotfix issue with VM0047 Ex Ante calculation file upload not accepting CSV file types</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-61-february-13-2026-ltms"><h3 id="release-v-4-61-february-13-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Fire Alert API Integration and updates for NASA FIRMS</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-61-february-13-2026-miscellaneous"><h3 id="release-v-4-61-february-13-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Updated section number input text with input validation is public consultation</li><li>Enhance manual signature handling in VCS and Comms Agreement</li><li>Remove Review Priority “P2” Cache Value in Prod</li><li>VRAF Enhancements</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-60-february-12-2026" aria-labelledby="release-title-v-4-60-february-12-2026">
+<header class="release-heading"><h2 id="release-title-v-4-60-february-12-2026">V 4.60 February 12, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-60-february-12-2026-dpm"><h3 id="release-v-4-60-february-12-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Nature Framework: Default placeholder for the table improvements</li><li>Hotfix for ACM002 methodology name change</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-60-february-12-2026-reviews"><h3 id="release-v-4-60-february-12-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Handle large payloads issues (413 errors) with PRR</li><li>Add proponent contacts management, add organization email field to proponent and general accounts, enhanced submit button logic and loading statement management, update proponent contact edit dialog message</li><li>Add activity log in view page and pagination improvements</li><li>Bug fixes for VVB Submission Date Difference</li><li>Fixed redirection issue on save as draft and allow peer review edit access after next round, updated pending peer review item on completion, mark complete review only</li><li>Optimize review project cache sync and null-safety</li><li>Improved Document Review Journey</li><li>Add sorting functionality to registry review dashboard</li><li>Enhancement on project profiling and list actions in review tool</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-60-february-12-2026-projects"><h3 id="release-v-4-60-february-12-2026-projects">Projects</h3>
+<ul class="release-points"><li>Public Comments View with search, export and role validation</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-60-february-12-2026-afolu-and-gcs-nprt"><h3 id="release-v-4-60-february-12-2026-afolu-and-gcs-nprt">AFOLU and GCS NPRT</h3>
+<ul class="release-points"><li>New multi-select filters and improved CSV export and implemented project status display in AFOLU NPRT, GCS export tables and csv</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-60-february-12-2026-miscellaneous"><h3 id="release-v-4-60-february-12-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Add priority filter menu and status</li><li>Update AFOLU NPRT &amp; GCS exports: new multi-select filters and improved CSV export</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-59-february-6-2026" aria-labelledby="release-title-v-4-59-february-6-2026">
+<header class="release-heading"><h2 id="release-title-v-4-59-february-6-2026">V 4.59 February 6, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-59-february-6-2026-dpm"><h3 id="release-v-4-59-february-6-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Update Dashboard Card for Project Submissions</li><li>VM0050 - Joint PDMR baseline and leakage emissions are zero- Calculation fix</li><li>Updated vm0047 migrations</li><li>VM0047 Quantification approach rule condition scope updated</li><li>Hotfix - Removed location filtering for user input to fix input duplication</li><li>Hotfix - Audit Log Out of Memory Issue</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-59-february-6-2026-reviews"><h3 id="release-v-4-59-february-6-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Update approval conditions and improve reviewer checks</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-59-february-6-2026-ltms"><h3 id="release-v-4-59-february-6-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Firealerts - Skip Already Processed &amp; Implemented Count in Summary</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-58-february-5-2026" aria-labelledby="release-title-v-4-58-february-5-2026">
+<header class="release-heading"><h2 id="release-title-v-4-58-february-5-2026">V 4.58 February 5, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-58-february-5-2026-dpm"><h3 id="release-v-4-58-february-5-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Updated schema and UI for VM0047v11 methodology templates to correct property name and improved documentation clarity</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-58-february-5-2026-scope-3"><h3 id="release-v-4-58-february-5-2026-scope-3">Scope 3</h3>
+<ul class="release-points"><li>Implemented S#S public report enhancements, comment submission updates and notification improvements</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-58-february-5-2026-novs"><h3 id="release-v-4-58-february-5-2026-novs">NOVS</h3>
+<ul class="release-points"><li>Enhance scrollbar styling and adjust height for search when creating comms</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-57-february-4-2026" aria-labelledby="release-title-v-4-57-february-4-2026">
+<header class="release-heading"><h2 id="release-title-v-4-57-february-4-2026">V 4.57 February 4, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-57-february-4-2026-dpm"><h3 id="release-v-4-57-february-4-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Fixed an issue where users cannot type text with tracking changes</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-57-february-4-2026-miscellaneous"><h3 id="release-v-4-57-february-4-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Account system optimization and feature enhancements</li><li>Ensure reliable representation deed downloads</li><li>Add multiple files validation and clear option for public comment document upload</li><li>Access to UMS and Role Management for Account Managers</li><li>Changed total submitted to total created in dashboard</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-57-february-4-2026-reviews"><h3 id="release-v-4-57-february-4-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>View completed review stage and determine project category based on methodology</li><li>Increased file upload limit to 100MB and support ZIP file uploads</li><li>CC secretariat email when PP submits a response</li><li>Add Request Correction List functionality</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-57-february-4-2026-ltms"><h3 id="release-v-4-57-february-4-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Fixed issue with fire alert not executing</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-56-jan-29-2026" aria-labelledby="release-title-v-4-56-jan-29-2026">
+<header class="release-heading"><h2 id="release-title-v-4-56-jan-29-2026">V 4.56 Jan 29, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-56-jan-29-2026-miscellaneous"><h3 id="release-v-4-56-jan-29-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Added production app registration id to valid audiences list for Sustain Cert in DPM/UMS</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-55-jan-26-2026" aria-labelledby="release-title-v-4-55-jan-26-2026">
+<header class="release-heading"><h2 id="release-title-v-4-55-jan-26-2026">V 4.55 Jan 26, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-55-jan-26-2026-data-api"><h3 id="release-v-4-55-jan-26-2026-data-api">Data API</h3>
+<ul class="release-points"><li>Enhanced data api with project document extraction data and proponent search</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-55-jan-26-2026-miscellaneous"><h3 id="release-v-4-55-jan-26-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Update Comms Agreement scop of activities options</li><li>Enhanced reliability of representation deed downloads</li><li>Add multiple files validation and clear option for public comment document upload and fix delete button resetting after entering contact info</li><li>Add flagging of digitally submitted projects in SuiteCRM</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-55-jan-26-2026-reviews"><h3 id="release-v-4-55-jan-26-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Integrate SuitCRM Case Sync with PRR</li><li>Resolve findings removal/editor reset and remove multiple issues and action items buttons</li><li>Sync SuiteCRM cases, refine project filtering and fix findings-table/PDF Layout in PRR</li><li>Increased file upload limit to 100 MB and added support for zip files</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-54-jan-20-2026" aria-labelledby="release-title-v-4-54-jan-20-2026">
+<header class="release-heading"><h2 id="release-title-v-4-54-jan-20-2026">V 4.54 Jan 20, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-54-jan-20-2026-dpm"><h3 id="release-v-4-54-jan-20-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Add Guardian Service App to allowed origins</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-54-jan-20-2026-reviews"><h3 id="release-v-4-54-jan-20-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Update PRR deadline to 90 days and remove auto-close</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-54-jan-20-2026-miscellaneous"><h3 id="release-v-4-54-jan-20-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Fix Hedera ID not saving during account creation</li><li>Improve requantifiaction/reconciliation validations, add additional account holder support and fix signatory reset issues</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-53-jan-16-2026" aria-labelledby="release-title-v-4-53-jan-16-2026">
+<header class="release-heading"><h2 id="release-title-v-4-53-jan-16-2026">V 4.53 Jan 16, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-53-jan-16-2026-dpm"><h3 id="release-v-4-53-jan-16-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Hotfix: Label change for the Nature Framework</li><li>Hotfix: Updated the list of supported file types to include.xlsx,.xls and.csv</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-52-jan-15-2026" aria-labelledby="release-title-v-4-52-jan-15-2026">
+<header class="release-heading"><h2 id="release-title-v-4-52-jan-15-2026">V 4.52 Jan 15, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-52-jan-15-2026-dpm"><h3 id="release-v-4-52-jan-15-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Validation report PDF output summary section</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-52-jan-15-2026-pada"><h3 id="release-v-4-52-jan-15-2026-pada">PADA</h3>
+<ul class="release-points"><li>PADA Dashboard with end-to-end submission workflows and real-time updates</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-52-jan-15-2026-novs"><h3 id="release-v-4-52-jan-15-2026-novs">NOVS</h3>
+<ul class="release-points"><li>Add version info in comms agreement pdf</li><li>Document Naming Simplification and date format alignment</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-52-jan-15-2026-miscellaneous"><h3 id="release-v-4-52-jan-15-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Allow admins to change activity data files in partially paid status</li><li>Show multiple kml files for the selected project</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-52-jan-15-2026-reviews"><h3 id="release-v-4-52-jan-15-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Added withdraw/close actions, reset withdraw decisions and enhanced notification templates in PRR</li><li>Non-compliant rule handling, status fixes and mention notifications in PRR</li><li>Allow XLSX upload file for VVB/PP in PRR</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-51-jan-9-2026" aria-labelledby="release-title-v-4-51-jan-9-2026">
+<header class="release-heading"><h2 id="release-title-v-4-51-jan-9-2026">V 4.51 Jan 9, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-51-jan-9-2026-reviews"><h3 id="release-v-4-51-jan-9-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Increased max request size limit for PRR Request</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-50-jan-7-2026" aria-labelledby="release-title-v-4-50-jan-7-2026">
+<header class="release-heading"><h2 id="release-title-v-4-50-jan-7-2026">V 4.50 Jan 7, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-50-jan-7-2026-dpm"><h3 id="release-v-4-50-jan-7-2026-dpm">DPM</h3>
+<ul class="release-points"><li>Various Nature Framework changes, enhancements and improvements based on feedback</li><li>Added check to update registry project data only if service response is a success</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-50-jan-7-2026-reviews"><h3 id="release-v-4-50-jan-7-2026-reviews">Reviews</h3>
+<ul class="release-points"><li>Made all images in PRR PDF responsive to prevent overflow</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-50-jan-7-2026-ltms"><h3 id="release-v-4-50-jan-7-2026-ltms">LTMS</h3>
+<ul class="release-points"><li>Improved handling of oversized geometries and chunked processing</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-50-jan-7-2026-miscellaneous"><h3 id="release-v-4-50-jan-7-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Add internal team filter to project submission card on dashboard to remove internal team records</li><li>Added TESTING prefix to email subjects in non-production environments</li></ul>
+</section>
+</section>
+        <section class="release-card" id="release-v-4-49-jan-5-2026" aria-labelledby="release-title-v-4-49-jan-5-2026">
+<header class="release-heading"><h2 id="release-title-v-4-49-jan-5-2026">V 4.49 Jan 5, 2026</h2></header>
+<section class="release-section" aria-labelledby="release-v-4-49-jan-5-2026-digital-project-submission"><h3 id="release-v-4-49-jan-5-2026-digital-project-submission">Digital Project Submission</h3>
+<ul class="release-points"><li>Initialized latitude and longitude values to default if not provided in registry project data</li><li>Fixed an issue with PDF Download</li><li>Dynamically set labels for project crediting period based on type and clarify date range.</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-49-jan-5-2026-scope3"><h3 id="release-v-4-49-jan-5-2026-scope3">Scope3</h3>
+<ul class="release-points"><li>New Scope3 user interface</li></ul>
+</section>
+<section class="release-section" aria-labelledby="release-v-4-49-jan-5-2026-miscellaneous"><h3 id="release-v-4-49-jan-5-2026-miscellaneous">Miscellaneous</h3>
+<ul class="release-points"><li>Hedera integration for account creation and editing</li><li>Enhanced account proponent queries with status filtering and expanded organization access</li><li>Added a version repository for comms template</li><li>Included previous submissions in NOVS data export</li><li>Deeds created in project hub are uploaded to their corresponding document type in registry with the information of the required fields entered</li><li>Simplified user id retrieval</li></ul>
+</section>
+</section>
+        <section class="closing-section" id="how-you-can-help" aria-labelledby="how-you-can-help-title">
+<h2 id="how-you-can-help-title">How You Can Help</h2>
+<p>We are dedicated to providing users with an exceptional experience, and your feedback is instrumental in achieving this aim. Here&#x27;s how you can contribute:</p>
+<ul class="release-points"><li><strong>Test the New Features</strong> – Set aside some time to explore the latest features introduced in this release and share your insights on when they align with your expectations.</li><li><strong>Report Any Issues</strong> – If you encounter any issues or bugs, please report them to us.</li><li><strong>Share Your Suggestions</strong> – We are eager to hear your ideas on how we can enhance the Project Hub experience. Whether you have a new feature request or a suggestion for improving usability, your contributions are valuable to us.</li></ul>
+</section>
+        <section class="closing-section" id="how-to-provide-feedback" aria-labelledby="how-to-provide-feedback-title">
+<h2 id="how-to-provide-feedback-title">How to Provide Feedback</h2>
+<p>You can use this <a href="https://verra.clickup.com/forms/2213113/f/23h7t-64157/CWLJINM7LT6I94ZM8I" target="_blank" rel="noopener noreferrer">ClickUp Form</a> to share your ideas for new features, report bugs or other comments you have about the digital tools.</p>
+<ul class="release-points"><li>Report any technical issues or bugs in the Project Hub applications</li><li>Suggest new features or improvements</li><li>Propose ideas for entirely new applications</li></ul>
+<p>You can track the status of your submission here: <a href="https://verra.clickup.com/sharing/2213113/b/h/23h7t-64257/15bcb17cca638ab" target="_blank" rel="noopener noreferrer">Status</a>. Your insights are invaluable in helping us build tools that truly serve your needs.</p>
+</section>
+      </main>
+    </div>
+    <script>
+      (function () {
+        var links = Array.prototype.slice.call(document.querySelectorAll('.release-index a[href^="#"]'));
+        var targets = links.map(function (link) { return document.getElementById(link.hash.slice(1)); });
+        var toggles = document.querySelectorAll('.toc-toggle');
 
-        <p class="release-intro">This update makes project submissions and reviews easier to navigate, adds more flexibility to digital forms, and gives administrators clearer tools for managing requests and project information.</p>
+        toggles.forEach(function (button) {
+          button.addEventListener('click', function () {
+            var list = document.getElementById(button.getAttribute('aria-controls'));
+            if (!list) return;
+            var expanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', String(!expanded));
+            list.classList.toggle('expanded', !expanded);
+          });
+        });
 
-        <section class="release-section" aria-labelledby="project-submission-tool">
-          <h3 id="project-submission-tool">Project Submission Tool</h3>
-          <ul>
-            <li>Calculation fields now appear or hide based on your selections, helping you focus on the information needed at each step.</li>
-            <li>Monitoring reports now include the monitoring period when custom methodology templates are used.</li>
-          </ul>
-        </section>
+        function expandHashTarget() {
+          var link = links.find(function (item) { return item.hash === window.location.hash; });
+          var list = link && link.closest('.toc-subitems');
+          if (list) {
+            list.classList.add('expanded');
+            var button = list.previousElementSibling.querySelector('.toc-toggle');
+            if (button) button.setAttribute('aria-expanded', 'true');
+          }
+          if (link && window.location.hash) {
+            window.requestAnimationFrame(function () {
+              var target = document.getElementById(window.location.hash.slice(1));
+              if (target) target.scrollIntoView();
+            });
+          }
+        }
 
-        <section class="release-section" aria-labelledby="digital-forms">
-          <h3 id="digital-forms">Digital Forms</h3>
-          <ul>
-            <li>Administrators can filter the NOVS list by project proponent.</li>
-            <li>When a Registry user denies a request, they must select a reason. The reason can then be included in the decision letter.</li>
-            <li>Exemption requests that were pre-approved or returned can now be updated.</li>
-            <li>NOVS export files now use an updated date format.</li>
-            <li>The submit button is now available on communications agreements with multiple project proponents.</li>
-            <li>Additional VVB contacts listed on exemption request forms are now copied on request email notifications.</li>
-            <li>Administrators can download a PDF report of all comments on an exemption request.</li>
-          </ul>
-        </section>
+        function updateActiveLink() {
+          var current = 0;
+          targets.forEach(function (target, index) {
+            if (target && target.getBoundingClientRect().top <= 120) current = index;
+          });
+          links.forEach(function (link, index) {
+            if (index === current) link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          });
+          if (links[current]) {
+            var linkList = links[current].closest('.toc-subitems');
+            if (linkList && !linkList.classList.contains('expanded')) {
+              linkList.classList.add('expanded');
+              var button = linkList.previousElementSibling.querySelector('.toc-toggle');
+              if (button) button.setAttribute("aria-expanded", "true");
+            }
+          }
+        }
 
-        <section class="release-section" aria-labelledby="review-tool">
-          <h3 id="review-tool">Review Tool</h3>
-          <ul>
-            <li>A project remains marked as “Assigned” after it is reassigned to a new category.</li>
-            <li>Required-field messages remain visible until all required fields are complete.</li>
-            <li>A confirmation message appears when you change a finding’s issue type.</li>
-            <li>Issue types added in one document are now available in the other documents in the same review.</li>
-            <li>Changes to documents, findings, and comments are now saved automatically.</li>
-            <li>Deadline warning emails now show the updated dates after an exemption request is approved.</li>
-            <li>Verra’s response now displays correctly in reviews.</li>
-            <li>Review rounds now update correctly.</li>
-          </ul>
-        </section>
-
-        <section class="release-section" aria-labelledby="general-improvements">
-          <h3 id="general-improvements">General Improvements</h3>
-          <ul>
-            <li>Interface updates make Project Hub easier to use.</li>
-            <li>Billing information from the registry billing system can now sync to Project Hub.</li>
-            <li>Registry information is now available on Verra’s public website.</li>
-            <li>Data is now extracted automatically during registry synchronization.</li>
-            <li>Data exports now include a filter.</li>
-          </ul>
-        </section>
-      </article>
-    </main>
-
+        window.addEventListener('scroll', updateActiveLink, { passive: true });
+        window.addEventListener('hashchange', function () { expandHashTarget(); updateActiveLink(); });
+        expandHashTarget();
+        updateActiveLink();
+      })();
+    </script>
   </body>
 </html>

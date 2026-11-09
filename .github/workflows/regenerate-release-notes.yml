@@ -1,0 +1,43 @@
+name: Regenerate release notes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/regenerate-release-notes.yml"
+      - "releases/source/2026-release-notes.docx"
+      - "scripts/generate_release_notes.py"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out documentation
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate and validate release page
+        run: |
+          python scripts/generate_release_notes.py
+          python scripts/generate_release_notes.py --check
+
+      - name: Publish generated HTML to Pages branch
+        run: |
+          if git diff --quiet -- releases/index.html; then
+            echo "Release notes are already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add releases/index.html
+          git commit -m "Update release notes from Word source"
+          git push origin HEAD:main

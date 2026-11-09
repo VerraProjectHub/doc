@@ -50,3 +50,16 @@ uses the embedding Project Hub origin when available.
 The GitHub Pages site is published from the repository root. Since this
 repository is named `doc`, the public DSP directory path is
 `/doc/dsp-directory/` (for example, `/doc/dsp-directory/belian/`).
+
+## Release notes updates
+
+`releases/source/2026-release-notes.docx` is the source of truth for the
+published release page. After the Word file is updated and pushed to `main`,
+the `Regenerate release notes` workflow rebuilds `releases/index.html` and
+pushes the generated page back to `main` for GitHub Pages to publish. Do not
+edit the generated HTML directly.
+
+To regenerate locally, run `python3 scripts/generate_release_notes.py`. Use
+`python3 scripts/generate_release_notes.py --check` to verify that the
+published HTML matches the Word source. Ticket references are omitted from
+the generated page.
